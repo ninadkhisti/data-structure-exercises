@@ -1,4 +1,4 @@
-package com.sample;
+package com.sample.array;
 
 /**
  * TwoSum with sorted array

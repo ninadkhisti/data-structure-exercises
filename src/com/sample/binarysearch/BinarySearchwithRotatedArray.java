@@ -1,7 +1,7 @@
 package com.sample.binarysearch;
 
 /**
- * TODO: Describe purpose and behavior of BinarySearchwithRotatedArray
+ * Modified Binary Search with rotated array
  */
 public class BinarySearchwithRotatedArray {
 
