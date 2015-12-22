@@ -10,6 +10,26 @@ public class BinarySearchTree {
         int query = 45;
 
         System.out.println(binarySearch(input, query, 0, input.length - 1));
+        System.out.println(binarySearchII(input, query));
+    }
+
+    private static int binarySearchII(int[] input, int query) {
+        int low = 0;
+        int high = input.length;
+
+        while (low < high) {
+            int mid = (low + high) / 2;
+            if (input[mid] == query) {
+                return input[mid];
+            }
+            if (query > input[mid]) { //right
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return -1;
     }
 
     private static int binarySearch(int[] input, int query, int low, int high) {
