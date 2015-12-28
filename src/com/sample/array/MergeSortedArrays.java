@@ -1,4 +1,4 @@
-package com.sample.binarysearch;
+package com.sample.array;
 
 import java.util.Arrays;
 import java.util.List;
