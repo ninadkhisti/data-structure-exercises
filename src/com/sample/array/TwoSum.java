@@ -22,6 +22,5 @@ public class TwoSum {
             }
             reminder.put(secondPart, cnt);
         }
-
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class UniqueBST {
 
     public static void main(String[] args) {
-        int n = 5;
+        int n = 3;
         findUniqueBST(n);
         printUniqueBST(n);
     }
@@ -17,7 +17,8 @@ public class UniqueBST {
     private static void printUniqueBST(int n) {
         List<List<TreeNode<Integer>>> bsts = new ArrayList<>(n);
 
-        List<TreeNode<Integer>> bst0 = null;
+        List<TreeNode<Integer>> bst0 = new ArrayList<>();
+        bst0.add(null);
         List<TreeNode<Integer>> bst1 = new ArrayList<>();
         bst1.add(new TreeNode<Integer>(1));
         bsts.add(bst0);
@@ -30,27 +31,11 @@ public class UniqueBST {
                 TreeNode<Integer> root = new TreeNode<Integer>(cnt);
                 List<TreeNode<Integer>> leftNodes = bsts.get(k);
                 List<TreeNode<Integer>> rightNodes = bsts.get(cnt - (k + 1));
-                if (leftNodes == null) {
-                    for (TreeNode<Integer> righNode : rightNodes) {
-                        root.left = null;
-                        root.right = righNode;
-                        bstn.add(root);
-                    }
-                }
-                if (rightNodes == null) {
-                    for (TreeNode<Integer> leftNode : leftNodes) {
+                for (TreeNode<Integer> leftNode : leftNodes) {
+                    for (TreeNode<Integer> rightNode : rightNodes) {
                         root.left = leftNode;
-                        root.right = null;
+                        root.right = rightNode;
                         bstn.add(root);
-                    }
-                }
-                if (leftNodes != null && rightNodes != null) {
-                    for (TreeNode<Integer> leftNode : leftNodes) {
-                        for (TreeNode<Integer> rightNode : rightNodes) {
-                            root.left = leftNode;
-                            root.right = rightNode;
-                            bstn.add(root);
-                        }
                     }
                 }
             }

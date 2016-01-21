@@ -14,7 +14,7 @@ public class MinimumDistanceBetweenStrings {
 
         String input1 = "a";
         String input2 = "b";
-        List<String> input = Arrays.asList("a", "a", "d", "d", "d", "d", "d", "d", "d", "b", "c", "d", "d", "a", "e",
+        List<String> input = Arrays.asList("a", "e", "d", "d", "d", "d", "d", "d", "d", "b", "c", "d", "d", "a", "e",
                 "f");
 
         int index = 0;
@@ -33,5 +33,25 @@ public class MinimumDistanceBetweenStrings {
             }
         }
         System.out.println(mindistance);
+
+        minimumDistance(input);
+    }
+
+    private static void minimumDistance(List<String> input) {
+        String input1 = "a";
+        String input2 = "a";
+        int index = 0, pindex = 0, mindistance = -1;
+        int cnt = 0;
+        for (String a : input) {
+            cnt++;
+            if (a.equals(input1) || a.equals(input2)) {
+                pindex = index;
+                index = cnt;
+                if (index > 0 && pindex > 0 && (Math.abs(index - pindex) < mindistance || mindistance == -1)) {
+                    mindistance = Math.abs(index - pindex);
+                }
+            }
+        }
+        System.out.println("mindistance =>" + mindistance);
     }
 }

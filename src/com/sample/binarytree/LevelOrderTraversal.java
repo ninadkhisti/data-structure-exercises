@@ -1,6 +1,7 @@
 package com.sample.binarytree;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,7 +15,8 @@ import java.util.Stack;
  *                  3     7
  *                 / \   / \
  *                1   4 6   9
- *                
+ *               / \
+ *              10 11
  *  Some additional applications include 
  *  Same Tree (equality of nodes) 
  *  Symmetric Tree (Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center)       
@@ -24,7 +26,10 @@ import java.util.Stack;
 public class LevelOrderTraversal {
 
     public static void main(String[] args) {
-        TreeNode<Integer> ll1 = new TreeNode<>(1);
+        TreeNode<Integer> lll1 = new TreeNode<>(10);
+        TreeNode<Integer> llr1 = new TreeNode<>(11);
+
+        TreeNode<Integer> ll1 = new TreeNode<>(1, lll1, llr1);
         TreeNode<Integer> rl1 = new TreeNode<>(4);
         TreeNode<Integer> l1 = new TreeNode<>(3, ll1, rl1);
 
@@ -36,6 +41,7 @@ public class LevelOrderTraversal {
         levelOrderTraversal(root);
         levelOrderTraversalII(root);
         levelOrderTraversalZigZag(root);
+        levelOrderTraversalZigZagII(root);
     }
 
     private static void levelOrderTraversal(TreeNode<Integer> root) {
@@ -120,4 +126,34 @@ public class LevelOrderTraversal {
         }
         System.out.println(result.toString());
     }
+
+    private static void levelOrderTraversalZigZagII(TreeNode<Integer> root) {
+        Queue<TreeNode<Integer>> queue = new LinkedList<TreeNode<Integer>>();
+        if (root == null) {
+            return;
+        }
+        queue.add(root);
+        int height = 0;
+        while (!queue.isEmpty()) {
+            Deque<Integer> level = new LinkedList<>();
+            int queuesize = queue.size();
+            //level traversal
+            for (int cnt = 0; cnt < queuesize; cnt++) {
+                TreeNode<Integer> node = queue.remove();
+                if (height % 2 == 0) {
+                    level.addLast(node.data);
+                } else {
+                    level.addFirst(node.data);
+                }
+                if (node.left != null)
+                    queue.add(node.left);
+                if (node.right != null)
+                    queue.add(node.right);
+            }
+            System.out.println(level.toString());
+            height++;
+        }
+
+    }
+
 }

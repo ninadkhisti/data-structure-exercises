@@ -11,8 +11,28 @@ public class MinRotatedArray {
         Integer[] input = { 4, 5, 6, 7, 0, 1, 2 };
         System.out.println(findMinimum(input));
 
-        Integer[] input1 = { 4, 5, 6, 7, 0, 1, 2 };
+        Integer[] input1 = { 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1 };
+        System.out.println(findMinimumWithDups(input1));
 
+    }
+
+    private static int findMinimumWithDups(Integer[] input) {
+        int low = 0;
+        int high = input.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (input[mid] > input[low]) {
+                low = mid + 1;
+            } else if (input[mid] < input[low]) {
+                high = mid;
+            } else if (input[mid] == input[low]) {
+                //high--;
+                low++;
+            }
+
+        }
+        return input[low];
     }
 
     private static int findMinimum(Integer[] input) {

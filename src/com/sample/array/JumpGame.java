@@ -1,5 +1,7 @@
 package com.sample.array;
 
+import java.util.Arrays;
+
 /**
  * Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
@@ -16,9 +18,10 @@ The minimum number of jumps to reach the last index is 2. (Jump 1 step from inde
 public class JumpGame {
 
     public static void main(String[] args) {
-        int[] input = { 2, 8, 1, 1, 1, 1, 1, 1, 1, 1, 4 };
-        System.out.println(jumpGame(input));
+        int[] input = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 }; //{ 2, 8, 1, 1, 1, 1, 1, 1, 1, 1, 4 };
+
         int[] input1 = { 2, 3, 1, 0, 4 };
+        System.out.println(jumpGame(input1));
         System.out.println(jumpGame(input1));
         System.out.println(minimumJumps(input));
     }
@@ -47,18 +50,21 @@ public class JumpGame {
             return 0;
         int[] minJumpArray = new int[input.length];
 
-        for (int i = input.length - 2; i >= 0; i--) {
-            int maxJumps = input[i];
-            int totaljumps = 1;
-            if (input[i] == 0)
+        for (int cnt = input.length - 2; cnt >= 0; cnt--) {
+            int jumps = input[cnt];
+            if (input[cnt] == 0)
                 continue;
-            for (int j = 1; j <= maxJumps; j++) {
-                if (i + j < input.length - 1 && totaljumps > minJumpArray[i + j]) {
-                    totaljumps = minJumpArray[i + j];
+            int totaljumps = -1;
+            for (int icnt = 1; icnt <= jumps; icnt++) {
+                if (cnt + icnt <= input.length - 1) {
+                    totaljumps = totaljumps == -1 ? minJumpArray[cnt + icnt] : Math.min(totaljumps, minJumpArray[cnt
+                            + icnt]);
                 }
             }
-            minJumpArray[i] = totaljumps + 1;
+            minJumpArray[cnt] = totaljumps + 1;
+
         }
+        System.out.println(Arrays.toString(minJumpArray));
         return minJumpArray[0];
     }
 }
