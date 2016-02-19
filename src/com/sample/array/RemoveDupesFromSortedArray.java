@@ -27,6 +27,36 @@ public class RemoveDupesFromSortedArray {
             array[cnt] = 0;
         }
         System.out.println(Arrays.toString(array));
+        removeElementFromArray(array);
+        removeMorethanTwoDuplicates();
+    }
+
+    private static void removeMorethanTwoDuplicates() {
+        int[] input = { 1, 1, 1, 2, 2, 3 };
+        int index = 1;
+        int repeatCount = 1;
+
+        for (int cnt = 1; cnt < input.length; cnt++) {
+            if (input[cnt] == input[cnt - 1])
+                repeatCount++;
+            if (input[cnt] != input[cnt - 1])
+                repeatCount = 0;
+            if (repeatCount <= 2) {
+                input[index++] = input[cnt];
+            }
+        }
+        System.out.println(Arrays.toString(input));
+    }
+
+    private static void removeElementFromArray(int[] array) {
+        int k = 9;
+        int index = 0;
+        for (int cnt = 0; cnt < array.length; cnt++) {
+            if (array[cnt] != k) {
+                array[index++] = array[cnt];
+            }
+        }
+        System.out.println(Arrays.toString(array));
     }
 
     /**Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
@@ -39,13 +69,11 @@ public class RemoveDupesFromSortedArray {
     Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively. It doesn't matter what you leave beyond the new length.
     */
     private static void removeDupesfromArray(int[] input) {
-        int index = 0;
-        int previous = 0;
-        for (int cnt = 0; cnt < input.length; cnt++) {
-            if (cnt == 0 || input[cnt] != previous) {
+        int index = 1;
+        for (int cnt = 1; cnt < input.length; cnt++) {
+            if (input[cnt] != input[cnt - 1]) {
                 input[index++] = input[cnt];
             }
-            previous = input[cnt];
         }
         System.out.println("new array =>" + Arrays.toString(input));
     }
@@ -69,7 +97,8 @@ public class RemoveDupesFromSortedArray {
             if (input[cnt] != previous)
                 repeatCount = 0;
             if (cnt == 0 || repeatCount < 2) {
-                input[index++] = input[cnt];
+                input[index] = input[cnt];
+                index++;
             }
             previous = input[cnt];
         }

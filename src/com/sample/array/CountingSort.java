@@ -57,9 +57,7 @@ public class CountingSort {
             }
         }
         List<SortNode> nodes = new ArrayList<>();
-        for (Integer nodeValue : map.keySet()) {
-            nodes.add(map.get(nodeValue));
-        }
+        nodes.addAll(map.values());
         Collections.sort(nodes);
         int index = 0;
         for (SortNode a : nodes) {

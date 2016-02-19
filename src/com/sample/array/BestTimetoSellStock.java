@@ -13,6 +13,28 @@ public class BestTimetoSellStock {
         bestTimetoSellStockI(input);
         bestTimetoSellStockII(input);
         bestTimetoSellStock2(input);
+        bestTimetoSellStockCooldown(input);
+    }
+
+    private static void bestTimetoSellStockCooldown(int[] input) {
+        int buy = input[0];
+        int maxprofit = 0;
+        boolean cooldown = false;
+        for (int cnt = 1; cnt < input.length; cnt++) {
+            if (cooldown) {
+                cooldown = false;
+                continue;
+            }
+            if (input[cnt] > buy && buy > 0) {
+                maxprofit += input[cnt] - buy;
+                cooldown = true;
+                buy = 0;
+            } else if (buy == 0 || input[cnt] < buy) {
+                buy = input[cnt];
+            }
+        }
+        System.out.println("Max profit with cooldown =>" + maxprofit);
+
     }
 
     private static void bestTimetoSellStock2(int[] input) {
@@ -62,24 +84,13 @@ public class BestTimetoSellStock {
     }
 
     private static void bestTimetoSellStock(int[] input) {
-        int buy = 0, sell = 0;
         int maxprofit = 0;
-        int sellIndex = 0; // idea to compute previous sell index so new one can be avoided. 
-
-        for (int cnt = 0; cnt < input.length; cnt++) {
-            if (buy == 0 || buy > input[cnt]) {
+        int buy = input[0];
+        for (int cnt = 1; cnt < input.length; cnt++) {
+            maxprofit = Math.max(maxprofit, input[cnt] - buy);
+            if (input[cnt] < buy) {
                 buy = input[cnt];
-                for (int icnt = cnt + 1; icnt < input.length; icnt++) {
-                    if (sell == 0 || sell < input[icnt]) {
-                        sell = input[icnt];
-                    }
-                }
             }
-            if (sell - buy > maxprofit) {
-                maxprofit = sell - buy;
-            }
-            sell = 0;
-            buy = 0;
         }
         System.out.println("Max profit => " + maxprofit);
     }

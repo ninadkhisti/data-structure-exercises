@@ -51,12 +51,11 @@ public class MaximumSumSubArray {
     }
 
     private static void largestRectangleAreaHistogramII() {
-        int[] height = { 6, 2, 5, 4, 5, 1, 3 };//{ 2, 1, 5, 6, 2, 3 };
-        int len = height.length;
+        int[] height = { 1, 3, 2, 4, 6, 7, 3 };//{ 2, 1, 5, 6, 2, 3 };
         Stack<Integer> s = new Stack<Integer>();
         int maxArea = 0;
-        for (int i = 0; i <= len; i++) {
-            int h = (i == len ? 0 : height[i]);
+        for (int i = 0; i < height.length; i++) {
+            int h = i == height.length - 1 ? 0 : height[i];
             if (s.isEmpty() || h >= height[s.peek()]) {
                 s.push(i);
             } else {

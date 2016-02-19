@@ -21,52 +21,101 @@ public class CombinationSum {
     public static void main(String[] args) {
         int[] input = { 1, 2, 7, 6, 1, 5 };
         int target = 8;
+        //int[] input = { 1, 2, 3 };
+        //int target = 4;
 
-        List<List<Integer>> result = findCombinations(input, target);
+        List<List<Integer>> result = new ArrayList<>();
+        chelper(input, result, new ArrayList<Integer>(), target, 0);
+        System.out.println(result.toString());
+
+        List<List<Integer>> r1 = new ArrayList<>();
+        Arrays.sort(input);
+        chelperII(input, r1, new ArrayList<Integer>(), target, 0);
+        System.out.println(r1);
+        combinations();
+    }
+
+    private static void chelper(int[] input, List<List<Integer>> result, List<Integer> combi, int target, int start) {
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(combi));
+            return;
+        }
+        for (int cnt = start; cnt < input.length; cnt++) {
+            if (input[cnt] <= target) {
+                combi.add(input[cnt]);
+                //chelper(input, result, combi, target - input[cnt], cnt);
+                chelper(input, result, combi, target - input[cnt], cnt + 1);
+                combi.remove(combi.size() - 1);
+            }
+        }
+    }
+
+    private static void chelperII(int[] input, List<List<Integer>> result, List<Integer> combi, int target, int start) {
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(combi));
+            return;
+        }
+        for (int cnt = start; cnt < input.length; cnt++) {
+            if (cnt > start && input[cnt] == input[cnt - 1])
+                continue;
+            if (input[cnt] <= target) {
+                combi.add(input[cnt]);
+                chelperII(input, result, combi, target - input[cnt], cnt + 1);
+                combi.remove(combi.size() - 1);
+            }
+        }
+    }
+
+    private static void combinations() {
+        int[] input = { 2, 3, 6, 7 };
+        int k = 7;
+        int[] input1 = { 10, 1, 2, 7, 6, 1, 5 };
+        Arrays.sort(input1);
+        int k1 = 8;
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> current = new ArrayList<>();
+        //backtrackCombinations(input, k, 0, current, result);
+        backtrackCombinationsII(input1, k1, 0, current, result);
         System.out.println(result.toString());
     }
 
-    private List<Combination> combinationSum(int[] input) {
-        List<Combination> combinations = new ArrayList<>();
-        Arrays.sort(input);
-        Combination a = new Combination();
-        combinations.add(a);
+    private static void backtrackCombinations(int[] input, int currk, int start, List<Integer> current,
+            List<List<Integer>> result) {
 
-        for (int cnt = 0; cnt < input.length; cnt++) {
-            List<Combination> cs = new ArrayList<>();
-            for (Combination c : combinations) {
-                List<Integer> nums = new ArrayList<>(c.combination);
-                nums.add(input[cnt]);
-                Combination aComb = new Combination();
-                aComb.combination = nums;
-
-            }
-            combinations.addAll(cs);
+        if (currk == 0 && current.size() > 0) {
+            result.add(current);
+            return;
         }
-
-        return combinations;
+        if (start >= input.length) {
+            return;
+        }
+        for (int cnt = start; cnt < input.length; cnt++) {
+            int target = currk - input[cnt];
+            if (target >= 0) {
+                current.add(input[cnt]);
+                backtrackCombinations(input, target, cnt, new ArrayList<>(current), result);
+                //backtrackCombinations(input, target, start + 1, new ArrayList<>(current), result);
+                current.remove(current.size() - 1);
+            }
+        }
     }
 
-    private static List<List<Integer>> findCombinations(int[] input, int target) {
-        Arrays.sort(input);
-        List<List<Integer>> result = new ArrayList<>();
-        List<Integer> combination = new ArrayList<>();
-        combinationSum(input, target, result, combination, 0);
-        return result;
-    }
+    private static void backtrackCombinationsII(int[] input, int currk, int start, List<Integer> current,
+            List<List<Integer>> result) {
 
-    private static void combinationSum(int[] input, int target, List<List<Integer>> result, List<Integer> combination,
-            int begin) {
-        for (int cnt = begin; cnt < input.length; cnt++) {
-            if (target == 0) {
-                List<Integer> c = new ArrayList<Integer>(combination);
-                result.add(c);
-            } else if (target < 0) {
-                return;
-            } else {
-                List<Integer> ncombination = new ArrayList<Integer>(combination);
-                ncombination.add(input[cnt]);
-                combinationSum(input, target - input[cnt], result, ncombination, cnt + 1);
+        if (currk == 0 && current.size() > 0) {
+            result.add(current);
+            return;
+        }
+        if (start >= input.length) {
+            return;
+        }
+        for (int cnt = start; cnt < input.length; cnt++) {
+            int target = currk - input[cnt];
+            if (target >= 0) {
+                current.add(input[cnt]);
+                backtrackCombinationsII(input, target, cnt + 1, new ArrayList<>(current), result);
+                current.remove(current.size() - 1);
             }
         }
     }

@@ -13,6 +13,7 @@ public class UglyNumber {
     public static void main(String[] args) {
         System.out.println(uglyNumber(30));
         System.out.println(generateUglyNumbers(30).toString());
+        System.out.println(uglyNumbers(12));
     }
 
     private static boolean uglyNumber(int i) {
@@ -39,16 +40,47 @@ public class UglyNumber {
             int ugly = Math.min(Math.min(number2, number3), number5);
             result.add(ugly);
             if (ugly == number2) {
-                number2 = 2 * result.get(++index2);
+                index2++;
+                number2 = 2 * result.get(index2);
             }
             if (ugly == number3) {
-                number3 = 3 * result.get(++index3);
+                index3++;
+                number3 = 3 * result.get(index3);
             }
             if (ugly == number5) {
-                number5 = 5 * result.get(++index5);
+                index5++;
+                number5 = 5 * result.get(index5);
             }
         }
         return result;
+    }
 
+    private static List<Integer> uglyNumbers(int n) {
+        int[] seed = { 2, 7, 13, 19 };
+
+        int[] multiple = new int[seed.length];
+        int[] ugly = new int[seed.length];
+        List<Integer> result = new ArrayList<>();
+        result.add(1);
+        for (int cnt = 0; cnt < seed.length; cnt++) {
+            ugly[cnt] = seed[cnt];
+        }
+
+        for (int cnt = 1; cnt < n; cnt++) {
+            int anugly = ugly[0];
+            for (int icnt = 0; icnt < seed.length; icnt++) {
+                if (anugly > ugly[icnt]) {
+                    anugly = ugly[icnt];
+                }
+            }
+            result.add(anugly);
+            for (int icnt = 0; icnt < seed.length; icnt++) {
+                if (anugly == ugly[icnt]) {
+                    multiple[icnt]++;
+                    ugly[icnt] = seed[icnt] * result.get(multiple[icnt]);
+                }
+            }
+        }
+        return result;
     }
 }

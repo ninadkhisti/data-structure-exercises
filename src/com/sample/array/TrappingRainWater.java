@@ -33,17 +33,26 @@ public class TrappingRainWater {
     }
 
     private static void trappingRainWater(int[] input) {
-        int previousPeak = 0, peak = 0;
-        for (int cnt = 0; cnt < input.length - 1; cnt++) {
-            if (input[cnt] > input[cnt + 1]) {
-                if (cnt == 0 || input[cnt] >= peak) {
-                    peak = input[cnt];
-                }
+        int[] left = new int[input.length];
+        int max = 0;
+        for (int cnt = 0; cnt < input.length; cnt++) {
+            if (input[cnt] > max) {
+                max = input[cnt];
             }
-            if (peak != previousPeak && cnt > 0) {
-                System.out.println("calculate => peak" + peak + " previous => " + previousPeak);
-            }
-            previousPeak = peak;
+            left[cnt] = max;
         }
+        max = 0;
+        int[] right = new int[input.length];
+        for (int cnt = input.length - 1; cnt >= 0; cnt--) {
+            if (input[cnt] > max) {
+                max = input[cnt];
+            }
+            right[cnt] = max;
+        }
+        int area = 0;
+        for (int cnt = 0; cnt < input.length; cnt++) {
+            area += Math.min(left[cnt], right[cnt]) - input[cnt] < 0 ? 0 : Math.min(left[cnt], right[cnt]) - input[cnt];
+        }
+        System.out.println("Another area =>" + area);
     }
 }

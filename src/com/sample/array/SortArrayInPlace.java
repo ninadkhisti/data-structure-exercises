@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class SortArrayInPlace {
 
     public static void main(String[] args) {
-        int[] input = { 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 0, 1, 2 };
+        int[] input = { 2, 0, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 0, 1, 2 };
         int[] product = { 1, 2, 3, 4, 5 };
         productExceptSelf(product);
         sortInplace(input);
@@ -40,7 +40,7 @@ public class SortArrayInPlace {
                 input[start] = 0;
                 input[index] = temp;
                 start++;
-                index++;
+                //index++;
             } else if (input[index] == 2) {
                 int temp = input[end];
                 input[end] = 2;
