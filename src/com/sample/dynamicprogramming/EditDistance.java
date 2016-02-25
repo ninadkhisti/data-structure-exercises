@@ -1,4 +1,4 @@
-package com.sample.string;
+package com.sample.dynamicprogramming;
 
 import java.util.Arrays;
 

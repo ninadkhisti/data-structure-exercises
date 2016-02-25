@@ -41,14 +41,13 @@ public class BinaryTreeTraversals {
         List<Integer> inorderRec = new ArrayList<>();
         inorderTraversalIterative(root, inorderRec);
         System.out.println("Postorder Iterative");
-        List<Integer> postorderRec = new ArrayList<>();
-        postorderTraversalInterative(root, postorderRec);
-        inorder.toString();
-        inorderRec.toString();
-        preorder.toString();
-        preorderRec.toString();
-        postorder.toString();
-        postorderRec.toString();
+        List<Integer> postorderRec = postorderTraversalInterative(root);
+        System.out.println(inorder.toString());
+        System.out.println(inorderRec.toString());
+        System.out.println(preorder.toString());
+        System.out.println(preorderRec.toString());
+        System.out.println(postorder.toString());
+        System.out.println(postorderRec.toString());
 
     }
 
@@ -111,13 +110,14 @@ public class BinaryTreeTraversals {
         }
     }
 
-    private static void postorderTraversalInterative(TreeNode<Integer> root, List<Integer> postorder) {
+    private static List<Integer> postorderTraversalInterative(TreeNode<Integer> root) {
+        List<Integer> postorder = new ArrayList<>();
         Stack<TreeNode<Integer>> stack = new Stack<>();
         TreeNode<Integer> node = root;
         stack.push(root);
         while (!stack.isEmpty()) {
             node = stack.pop();
-            postorder.add(node.data);
+            postorder.add(0, node.data);
             System.out.println("Node => " + node.data);
             if (node.left != null) {
                 stack.push(node.left);
@@ -126,5 +126,6 @@ public class BinaryTreeTraversals {
                 stack.push(node.right);
             }
         }
+        return postorder;
     }
 }

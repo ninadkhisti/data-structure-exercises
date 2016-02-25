@@ -15,7 +15,7 @@ e.g. [aabc, cb], output is cbaabc
 public class PalindromeList {
 
     public static void main(String[] args) {
-        String[] input = { "aabc", "cb", "abc", "cba" };
+        String[] input = { "aabc", "cb", "abc", "cba", "c" };
         List<String> palindromes = palindromeStrings(input);
         System.out.println(palindromes.toString());
     }
@@ -66,6 +66,8 @@ public class PalindromeList {
     }
 
     private static String reverse(String a) {
+        if (a == null || a.length() <= 1)
+            return a;
         char[] array = a.toCharArray();
         int l = 0;
         int r = array.length - 1;

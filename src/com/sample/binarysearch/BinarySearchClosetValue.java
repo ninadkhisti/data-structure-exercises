@@ -1,5 +1,7 @@
 package com.sample.binarysearch;
 
+import java.util.Arrays;
+
 /**
  * TODO: Describe purpose and behavior of BinarySearchClosetValue
  */
@@ -8,6 +10,7 @@ public class BinarySearchClosetValue {
     public static void main(String[] args) {
         int[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 21, 22 };
 
+        System.out.println(Arrays.toString(array));
         int value = binarySearch(array, 14);
         System.out.println(value);
     }

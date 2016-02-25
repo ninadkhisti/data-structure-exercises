@@ -12,7 +12,7 @@ public class FactorCombinations {
         int n = 32;
         //List<List<Integer>> result = factorCombinations(n);
         List<List<Integer>> result = new ArrayList<>();
-        helper(result, new ArrayList<Integer>(), n, 2);
+        factorCombinations(result, new ArrayList<Integer>(), n, 2);
         System.out.println(result.toString());
 
     }
@@ -29,6 +29,23 @@ public class FactorCombinations {
             if (n % i == 0) {
                 item.add(i);
                 helper(result, item, n / i, i);
+                item.remove(item.size() - 1);
+            }
+        }
+    }
+
+    private static void factorCombinations(List<List<Integer>> result, List<Integer> item, int n, int start) {
+        if (n == 1) {
+            if (item.size() > 1) {
+                result.add(new ArrayList<>(item));
+                return;
+            }
+        }
+
+        for (int i = start; i <= n; i++) {
+            if (n % i == 0) {
+                item.add(i);
+                factorCombinations(result, item, n / i, i);
                 item.remove(item.size() - 1);
             }
         }

@@ -46,6 +46,7 @@ public class WordSearchTrie {
                 search(board, r, c, result, root, "");
             }
         }
+        System.out.println(result.toString());
     }
 
     private static void search(char[][] board, int r, int c, List<String> result, TrieNode p, String curr) {
@@ -53,20 +54,24 @@ public class WordSearchTrie {
             return;
 
         char ch = board[r][c];
-        curr.concat(Character.toString(ch));
+        curr = curr.concat(Character.toString(ch));
+        if (ch - 'a' < 0)
+            return;
         p = p.children[ch - 'a'];
-        if (p.children[ch - 'a'] == null)
+
+        if (p == null)
             return;
 
         if (p.leaf) {
             result.add(curr);
             return;
         }
+        char temp = board[r][c];
         board[r][c] = '#';
         search(board, r + 1, c, result, p, curr);
         search(board, r - 1, c, result, p, curr);
         search(board, r, c + 1, result, p, curr);
         search(board, r, c - 1, result, p, curr);
-        board[r][c] = ch;
+        board[r][c] = temp;
     }
 }

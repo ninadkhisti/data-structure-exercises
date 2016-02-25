@@ -7,19 +7,53 @@ public class StringToNumber {
 
     public static void main(String[] args) {
 
-        System.out.println(validNumber("1234"));
-        System.out.println(validNumber("0.0.1"));
-        System.out.println(validNumber("1323-"));
-        System.out.println(validNumber("123455.0000"));
-        System.out.println(validNumber("00.1"));
-        System.out.println(validNumber("0.-1"));
-        System.out.println(validNumber("1.2344-"));
-        System.out.println(validNumber("-5"));
-        System.out.println(validNumber("."));
-        System.out.println(validNumber("-"));
-        System.out.println(validNumber("bbb"));
-        System.out.println(validNumber("1bbb"));
+        System.out.println(validNumberIII("1234"));
+        System.out.println(validNumberIII("0.0.1"));
+        System.out.println(validNumberIII("1323-"));
+        System.out.println(validNumberIII("123455.0000"));
+        System.out.println(validNumberIII("00.1"));
+        System.out.println(validNumberIII("0.-1"));
+        System.out.println(validNumberIII("1.2344-"));
+        System.out.println(validNumberIII("-5"));
+        System.out.println(validNumberIII("."));
+        System.out.println(validNumberIII("-"));
+        System.out.println(validNumberIII("bbb"));
+        System.out.println(validNumberIII("1bbb"));
+        System.out.println(validNumberIII("1.234E+9"));
+        System.out.println(validNumberIII(" 5.1e-9"));
 
+    }
+
+    private static boolean validNumberIII(String input) {
+        input = input.trim();
+        boolean nums = false;
+        boolean eseen = false;
+        boolean numsafterE = true;
+        boolean decimalSeen = false;
+
+        for (int cnt = 0; cnt < input.length(); cnt++) {
+            char ch = input.charAt(cnt);
+            if (ch >= '0' && ch <= '9') {
+                nums = true;
+                numsafterE = true;
+            } else if (ch == '.') {
+                if (decimalSeen || eseen)
+                    return false;
+                decimalSeen = true;
+            } else if (ch == 'e' || ch == 'E') {
+                if (eseen || !nums)
+                    return false;
+                eseen = true;
+                numsafterE = false;
+            } else if (ch == '-' || ch == '+') {
+                if (cnt != 0 && !(input.charAt(cnt - 1) == 'E' || input.charAt(cnt - 1) == 'e'))
+                    return false;
+            } else {
+                return false;
+            }
+        }
+
+        return nums && numsafterE;
     }
 
     private static boolean validNumber(String input) {

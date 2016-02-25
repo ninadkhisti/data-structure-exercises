@@ -55,6 +55,7 @@ public class SubArrayWithSum {
             }
             sums.put(sum, cnt);
         }
+        System.out.println(sums.toString());
 
     }
 

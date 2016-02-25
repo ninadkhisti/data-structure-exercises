@@ -1,5 +1,7 @@
 package com.sample.array;
 
+import java.util.Arrays;
+
 /**
  * Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
 
@@ -10,7 +12,7 @@ Given nums = [1, 2, 1, 3, 2, 5], return [3, 5].
 public class SingleNumber {
 
     public static void main(String[] args) {
-        int[] input = { 1, 2, 1, 3, 2, 5 };
+        int[] input = { 1, 2, 1, 32, 2, 0 };
         int[] input1 = { 1, 1, 1, 2, 2, 2, 999, 999, 999, 44, 44, 44, 9 };
         int[] input2 = { 0, 1, 2, 4, 5, 6, 7 };
         singleNumber(input);
@@ -18,6 +20,34 @@ public class SingleNumber {
         hammingWeight(15);
         missingNumber(input2);
         System.out.println(1 << 4);
+        int i = 64;
+        System.out.println((i & i - 1) == 0 ? true : false);
+        int j = i & ~(i - 1);
+        System.out.println(j);
+
+        for (int cnt = 0; cnt < 32; cnt++) {
+            System.out.println(1 << cnt);
+        }
+
+        printBits(-6);
+        printBits(6);
+    }
+
+    private static void printBits(int i) {
+        int[] bits = new int[32];
+        for (int cnt = 0; cnt < 32; cnt++) {
+            if ((i & (1 << cnt)) != 0)
+                bits[cnt] = 1;
+        }
+        int j = 0;
+        for (int cnt = 0; cnt < 32; cnt++) {
+            if (bits[cnt] == 1)
+                j |= (1 << cnt);
+        }
+        System.out.println(j);
+        System.out.println(Arrays.toString(bits));
+        System.out.println(j & ~(j - 1));
+        System.out.println((j & (j - 1)) == 0 ? true : false);
     }
 
     private static void missingNumber(int[] input2) {

@@ -14,8 +14,23 @@ public class StrobogrammticNumber {
         System.out.println(strobogrammaticNumber(8698));
         List<String> numbers = strobogrammaticNumberII(5);
         System.out.println(numbers.toString());
-        //List<String> result = helper(5, 5);
-        //System.out.println(result.toString());
+        List<String> result = strobogrammaticNumberIII("9000", "99999");
+        System.out.println(result.toString());
+    }
+
+    private static List<String> strobogrammaticNumberIII(String start, String end) {
+        List<String> result = new ArrayList<String>();
+        for (int cnt = start.length(); cnt <= end.length(); cnt++) {
+            List<String> interim = strobogrammaticNumberII(cnt);
+            result.addAll(interim);
+        }
+        List<String> filtered = new ArrayList<>();
+        for (String a : result) {
+            if (a.compareTo(start) >= 0 && a.compareTo(end) <= 0) {
+                filtered.add(a);
+            }
+        }
+        return filtered;
     }
 
     private static List<String> strobogrammaticNumberII(int n) {

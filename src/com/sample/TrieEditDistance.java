@@ -119,7 +119,7 @@ public class TrieEditDistance {
         }
         List<String> result = new ArrayList<>();
         kEditDistanceHelper("", target, k, prev, root, result);
-        System.out.println(result.toString());
+        System.out.println("***" + result.toString());
     }
 
     private void kEditDistanceHelper(String current, String target, int k, int[] prev, TrieNode p, List<String> result) {
@@ -130,22 +130,23 @@ public class TrieEditDistance {
                 return;
             }
         }
+
         for (int cnt = 0; cnt < 26; cnt++) {
             if (p.children[cnt] == null) {
                 continue;
             }
-            int[] currDistance = new int[target.length() + 1];
-            currDistance[0] = current.length() + 1;
-            for (int j = 1; j < prev.length; j++) {
-                if (target.charAt(j - 1) == ((char) cnt + 'a')) {
-                    currDistance[j] = prev[j - 1];
+
+            int[] curr = new int[target.length() + 1];
+            curr[0] = current.length() + 1;
+            for (int icnt = 1; icnt < curr.length; icnt++) {
+                if (target.charAt(icnt - 1) == (char) (cnt + 'a')) {
+                    curr[icnt] = prev[icnt - 1];
                 } else {
-                    currDistance[j] = Math.min(Math.min(prev[j - 1], prev[j]), currDistance[j - 1]) + 1;
+                    curr[icnt] = Math.min(Math.min(prev[icnt - 1], prev[icnt]), curr[icnt - 1]) + 1;
                 }
             }
-            kEditDistanceHelper(current + (char) (cnt + 'a'), target, k, currDistance, p.children[cnt], result);
+            kEditDistanceHelper(current + (char) (cnt + 'a'), target, k, curr, p.children[cnt], result);
         }
-
     }
 
     private void printHelper(TrieNode p, StringBuffer sb) {

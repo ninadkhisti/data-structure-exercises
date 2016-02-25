@@ -1,4 +1,4 @@
-package com.sample.array;
+package com.sample.matrix;
 
 import java.util.Arrays;
 

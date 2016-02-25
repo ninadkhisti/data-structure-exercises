@@ -9,7 +9,7 @@ import java.util.Set;
 public class PrimeFactors {
 
     public static void main(String[] args) {
-        int number = 2500010;
+        int number = 27;
         Set<Integer> factors = primeFactors(number);
         System.out.println(factors);
     }
@@ -22,7 +22,7 @@ public class PrimeFactors {
         }
         int maxFactor = (int) Math.sqrt(number);
         for (int cnt = 3; cnt < maxFactor; cnt = cnt + 2) {
-            if (number % cnt == 0) {
+            while (number % cnt == 0) {
                 number /= cnt;
                 factors.add(cnt);
             }

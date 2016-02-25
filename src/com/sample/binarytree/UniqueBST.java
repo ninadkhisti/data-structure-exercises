@@ -9,9 +9,31 @@ import java.util.List;
 public class UniqueBST {
 
     public static void main(String[] args) {
-        int n = 4;
-        findUniqueBST(n);
-        printUniqueBST(n);
+        for (int n = 2; n < 25; n++) {
+            findUniqueBST(n);
+            findUniqueBSTII(n);
+        }
+        printUniqueBST(4);
+    }
+
+    private static void findUniqueBSTII(int n) {
+        // https://en.wikipedia.org/wiki/Catalan_number
+        long result = 1;
+        n = n - 1;
+        for (int cnt = n + 1; cnt <= 2 * n; cnt++) {
+            result *= cnt;
+            result /= (cnt - n);
+        }
+        result = result / (n + 1);
+        System.out.println(result);
+    }
+
+    private static long factorial(int n) {
+        long result = 1;
+        for (int cnt = 1; cnt <= n; cnt++) {
+            result *= cnt;
+        }
+        return result;
     }
 
     private static void printUniqueBST(int n) {

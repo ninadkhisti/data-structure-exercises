@@ -7,8 +7,10 @@ public class MajorityElement {
 
     public static void main(String[] args) {
 
-        char[] array = { 'a', 'a', 'a', 'z', 'c', 'c', 'b', 'b', 'i', 'j', 'c', 'c', 'c', 'b', 'c', 'c', 'd', 'e', 'f',
-                'g' };
+        //char[] array = { 'a', 'a', 'a', 'z', 'c', 'c', 'b', 'b', 'i', 'j', 'c', 'c', 'c', 'b', 'c', 'c', 'd', 'e', 'f',
+        //      'g' };
+
+        char[] array = { 'a', 'b', 'b', 'c' };
 
         int counter = 1;
         char majority = array[0];
