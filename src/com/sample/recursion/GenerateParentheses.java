@@ -24,6 +24,5 @@ public class GenerateParentheses {
             generateParentheses(result, paren.concat("("), start + 1, end, n);
         if (end < start)
             generateParentheses(result, paren.concat(")"), start, end + 1, n);
-
     }
 }

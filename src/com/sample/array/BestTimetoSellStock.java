@@ -1,5 +1,7 @@
 package com.sample.array;
 
+import java.util.Arrays;
+
 /**
  * Say you have an array for which the ith element is the price of a given stock on day i.
  * If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), 
@@ -13,28 +15,56 @@ public class BestTimetoSellStock {
         bestTimetoSellStockI(input);
         bestTimetoSellStockII(input);
         bestTimetoSellStock2(input);
-        bestTimetoSellStockCooldown(input);
+        bestTimetoSellStock();
+        bestTimetoSellStockKTrans();
     }
 
-    private static void bestTimetoSellStockCooldown(int[] input) {
-        int buy = input[0];
-        int maxprofit = 0;
-        boolean cooldown = false;
-        for (int cnt = 1; cnt < input.length; cnt++) {
-            if (cooldown) {
-                cooldown = false;
-                continue;
+    private static void bestTimetoSellStockKTrans() {
+        int[] price = { 2, 30, 15, 10, 8, 25, 80 };
+        int k = 2;
+        int n = price.length - 1;
+        if (price == null || price.length <= 1)
+            System.out.println("0");
+
+        if (k >= n / 2) {
+            int maxprofit = 0;
+            for (int i = 1; i <= n; i++) {
+                if (price[i] > price[i - 1])
+                    maxprofit += price[i] - price[i - 1];
             }
-            if (input[cnt] > buy && buy > 0) {
-                maxprofit += input[cnt] - buy;
-                cooldown = true;
-                buy = 0;
-            } else if (buy == 0 || input[cnt] < buy) {
-                buy = input[cnt];
+            System.out.println(maxprofit);
+        }
+        int[][] dp = new int[k + 1][n];
+        for (int i = 1; i <= k; i++) {
+            int localmax = dp[i - 1][0] - price[0];
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.max(dp[i][j - 1], price[j] + localmax);
+                localmax = Math.max(localmax, dp[i - 1][j] - price[j]);
             }
         }
-        System.out.println("Max profit with cooldown =>" + maxprofit);
 
+        System.out.println(Arrays.deepToString(dp));
+    }
+
+    private static void bestTimetoSellStock() {
+        // at most two transactions
+        int[] price = { 2, 30, 15, 10, 8, 25, 80 };
+        int[] profit = new int[price.length];
+
+        int max_sell = price[price.length - 1];
+        for (int cnt = price.length - 2; cnt >= 0; cnt--) {
+            if (price[cnt] > max_sell)
+                max_sell = price[cnt];
+            profit[cnt] = Math.max(profit[cnt + 1], max_sell - price[cnt]);
+        }
+        System.out.println(Arrays.toString(profit));
+        int min_buy = price[0];
+        for (int i = 1; i < price.length; i++) {
+            if (price[i] < min_buy)
+                min_buy = price[i];
+            profit[i] = Math.max(profit[i - 1], profit[i] + price[i] - min_buy);
+        }
+        System.out.println(Arrays.toString(profit));
     }
 
     private static void bestTimetoSellStock2(int[] input) {

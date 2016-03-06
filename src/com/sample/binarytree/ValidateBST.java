@@ -18,7 +18,7 @@ public class ValidateBST {
         TreeNode<Integer> rl1 = new TreeNode<>(4);
         TreeNode<Integer> l1 = new TreeNode<>(3, ll1, rl1);
 
-        TreeNode<Integer> lr1 = new TreeNode<>(2);
+        TreeNode<Integer> lr1 = new TreeNode<>(6);
         TreeNode<Integer> rr1 = new TreeNode<>(9);
         TreeNode<Integer> r1 = new TreeNode<>(7, lr1, rr1);
         TreeNode<Integer> root = new TreeNode<>(5, l1, r1);

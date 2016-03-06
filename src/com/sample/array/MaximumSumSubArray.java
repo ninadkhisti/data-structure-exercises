@@ -54,17 +54,17 @@ public class MaximumSumSubArray {
         int[] height = { 1, 3, 2, 4, 6, 7, 3 };//{ 2, 1, 5, 6, 2, 3 };
         Stack<Integer> s = new Stack<Integer>();
         int maxArea = 0;
-        for (int i = 0; i < height.length; i++) {
+        for (int i = 0; i < height.length;) {
             int h = i == height.length - 1 ? 0 : height[i];
             if (s.isEmpty() || h >= height[s.peek()]) {
                 s.push(i);
+                i++;
             } else {
                 int tp = s.pop();
                 maxArea = Math.max(maxArea, height[tp] * (s.isEmpty() ? i : i - 1 - s.peek()));
-                i--;
             }
         }
-        System.out.println("max area" + maxArea);
+        System.out.println("max area =>" + maxArea);
 
     }
 

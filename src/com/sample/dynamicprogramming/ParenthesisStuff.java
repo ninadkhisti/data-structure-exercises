@@ -1,5 +1,12 @@
 package com.sample.dynamicprogramming;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -15,6 +22,7 @@ public class ParenthesisStuff {
         System.out.println(removeInvalidParenthesis("(a)())()"));
         System.out.println(removeInvalidParenthesis("()())()"));
         System.out.println(removeInvalidParenthesis(")("));
+        System.out.println(removeInvalidParenthesisII("()())()"));
     }
 
     private static int longestvalidparenthesis(String input) {
@@ -55,6 +63,42 @@ public class ParenthesisStuff {
             }
         }
         return cnt == 0;
+    }
+
+    private static List<String> removeInvalidParenthesisII(String input) {
+        if (input == null || input.isEmpty())
+            return Collections.emptyList();
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        List<String> result = new ArrayList<>();
+        queue.add(input);
+        visited.add(input);
+        boolean found = false;
+        while (!queue.isEmpty()) {
+            String a = queue.remove();
+
+            if (validParenthesiss(a)) {
+                result.add(a);
+                found = true;
+            }
+
+            if (found)
+                continue;
+
+            for (int i = 0; i < a.length(); i++) {
+                if (a.charAt(i) != '(' && a.charAt(i) != ')')
+                    continue;
+                String prefix = a.substring(0, i);
+                String postfix = a.substring(i + 1);
+                String newinput = prefix + postfix;
+                if (!visited.contains(newinput)) {
+                    visited.add(newinput); //visited
+                    queue.add(newinput);
+                }
+            }
+
+        }
+        return result;
     }
 
     private static String removeInvalidParenthesis(String input) {

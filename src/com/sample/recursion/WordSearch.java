@@ -6,21 +6,23 @@ package com.sample.recursion;
 public class WordSearch {
 
     public static void main(String[] args) {
-        char[][] input = { { 'A', 'B', 'C', 'E' }, { 'S', 'F', 'C', 'S' }, { 'A', 'D', 'E', 'E' } };
-        String word = "SFCCESEEDA";
+        //char[][] input = { { 'A', 'B', 'C', 'E' }, { 'S', 'F', 'C', 'S' }, { 'A', 'D', 'E', 'E' } };
+        char[][] input = { { 'C', 'A', 'A' }, { 'A', 'A', 'A' }, { 'B', 'C', 'D' } };
+        String word = "AAAAAB";
         boolean result = wordSearch(input, word);
         System.out.println(result);
     }
 
     private static boolean wordSearch(char[][] input, String word) {
+        boolean result = false;
         for (int cnt = 0; cnt < input.length; cnt++) {
             for (int icnt = 0; icnt < input[0].length; icnt++) {
                 if (input[cnt][icnt] == word.charAt(0)) {
-                    return wordsearch(input, cnt, icnt, word, 0);
+                    result = result || wordsearch(input, cnt, icnt, word, 0);
                 }
             }
         }
-        return false;
+        return result;
     }
 
     private static boolean wordsearch(char[][] input, int r, int c, String word, int start) {

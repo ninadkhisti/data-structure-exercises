@@ -28,14 +28,6 @@ public class UniqueBST {
         System.out.println(result);
     }
 
-    private static long factorial(int n) {
-        long result = 1;
-        for (int cnt = 1; cnt <= n; cnt++) {
-            result *= cnt;
-        }
-        return result;
-    }
-
     private static void printUniqueBST(int n) {
         List<List<TreeNode<Integer>>> bsts = new ArrayList<>(n);
 

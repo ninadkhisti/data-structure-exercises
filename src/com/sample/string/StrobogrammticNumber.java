@@ -11,14 +11,23 @@ import java.util.List;
 public class StrobogrammticNumber {
 
     public static void main(String[] args) {
-        System.out.println(strobogrammaticNumber(8698));
+        System.out.println(strobogrammaticNumber("2"));
         List<String> numbers = strobogrammaticNumberII(5);
         System.out.println(numbers.toString());
-        List<String> result = strobogrammaticNumberIII("9000", "99999");
-        System.out.println(result.toString());
+        int result = strobogrammaticNumberIII("1", "0");
+        System.out.println(result);
     }
 
-    private static List<String> strobogrammaticNumberIII(String start, String end) {
+    private static int strobogrammaticNumberIII(String start, String end) {
+        if (start.compareTo(end) > 0)
+            return 0;
+        if (start.equals(end)) {
+            if (strobogrammaticNumber(start)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
         List<String> result = new ArrayList<String>();
         for (int cnt = start.length(); cnt <= end.length(); cnt++) {
             List<String> interim = strobogrammaticNumberII(cnt);
@@ -26,15 +35,16 @@ public class StrobogrammticNumber {
         }
         List<String> filtered = new ArrayList<>();
         for (String a : result) {
-            if (a.compareTo(start) >= 0 && a.compareTo(end) <= 0) {
+            if ((a.length() == start.length() && a.compareTo(start) > 0)
+                    || (a.length() == end.length() && a.compareTo(end) < 0)) {
                 filtered.add(a);
             }
         }
-        return filtered;
+        return filtered.size();
     }
 
     private static List<String> strobogrammaticNumberII(int n) {
-        List<String> one = Arrays.asList("8", "1", "0");
+        List<String> one = Arrays.asList("0", "1", "8");
         if (n == 0)
             return Collections.emptyList();
         if (n == 1)
@@ -64,44 +74,20 @@ public class StrobogrammticNumber {
         return result;
     }
 
-    private static boolean strobogrammaticNumber(int input) {
-        int result = 0;
-        int strobogrammatic = input;
-        while (input > 0) {
-            int digit = input % 10;
-            input = input / 10;
-            if (digit == 6)
-                digit = 9;
-            else if (digit == 9)
-                digit = 6;
-            result = result * 10 + digit;
+    private static boolean strobogrammaticNumber(String input) {
+        StringBuilder sb = new StringBuilder();
+        for (int cnt = input.length() - 1; cnt >= 0; cnt--) {
+            if (input.charAt(cnt) == '6') {
+                sb.append('9');
+            } else if (input.charAt(cnt) == '9') {
+                sb.append('6');
+            } else if (input.charAt(cnt) == '0' || input.charAt(cnt) == '1' || input.charAt(cnt) == '8') {
+                sb.append(input.charAt(cnt));
+            } else {
+                return false;
+            }
         }
-        return strobogrammatic == result;
-    }
-
-    private static List<String> helper(int n, int m) {
-        if (n == 0)
-            return new ArrayList<String>(Arrays.asList(""));
-        if (n == 1)
-            return new ArrayList<String>(Arrays.asList("0", "1", "8"));
-
-        List<String> list = helper(n - 2, m);
-
-        List<String> res = new ArrayList<String>();
-
-        for (int i = 0; i < list.size(); i++) {
-            String s = list.get(i);
-
-            if (n != m)
-                res.add("0" + s + "0");
-
-            res.add("1" + s + "1");
-            res.add("6" + s + "9");
-            res.add("8" + s + "8");
-            res.add("9" + s + "6");
-        }
-
-        return res;
+        return sb.toString().equals(input);
     }
 
 }

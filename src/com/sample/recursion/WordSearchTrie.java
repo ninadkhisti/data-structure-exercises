@@ -1,7 +1,10 @@
 package com.sample.recursion;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TODO: Describe purpose and behavior of WordSearchTrie
@@ -13,65 +16,99 @@ public class WordSearchTrie {
         TrieNode[] children = new TrieNode[26];
     }
 
-    private static TrieNode root;
+    private TrieNode root;
 
     public WordSearchTrie() {
         this.root = new TrieNode();
     }
 
-    private void addWord(String word) {
-        TrieNode p = root;
-        for (int cnt = 0; cnt < word.length(); cnt++) {
-            if (p.children[word.charAt(cnt) - 'a'] != null) {
-                p = p.children[word.charAt(cnt) - 'a'];
-            } else {
-                p.children[word.charAt(cnt) - 'a'] = new TrieNode();
-                p = p.children[word.charAt(cnt) - 'a'];
+    public void addWord(String word) {
+        if (word == null || word.isEmpty())
+            return;
+        TrieNode p = this.root;
+        for (int i = 0; i < word.length(); i++) {
+            if (p.children[word.charAt(i) - 'a'] == null) {
+                p.children[word.charAt(i) - 'a'] = new TrieNode();
             }
+            p = p.children[word.charAt(i) - 'a'];
         }
         p.leaf = true;
     }
 
+    public void printTrie() {
+        StringBuffer sb = new StringBuffer();
+        print(this.root, sb);
+    }
+
+    private void print(TrieNode p, StringBuffer sb) {
+        if (p.leaf) {
+            System.out.println(sb.toString());
+            //return; * imp
+        }
+        for (int cnt = 0; cnt < 26; cnt++) {
+            if (p.children[cnt] != null) {
+                print(p.children[cnt], sb.append((char) (cnt + 'a')));
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
         WordSearchTrie trie = new WordSearchTrie();
-        String[] inputs = { "oath", "pea", "eat", "rain" };
+        //String[] inputs = { "oath", "pea", "eat", "rain" };
+        String[] inputs = { "ab", "cb", "ad", "bd", "ac", "ca", "da", "bc", "db", "adcb", "dabc", "abb", "acb" };
         for (String input : inputs) {
             trie.addWord(input);
         }
-        char[][] board = { { 'o', 'a', 'a', 'n' }, { 'e', 't', 'a', 'e' }, { 'i', 'h', 'k', 'r' },
-                { 'i', 'f', 'l', 'v' } };
-        List<String> result = new ArrayList<>();
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                search(board, r, c, result, root, "");
-            }
-        }
+        trie.printTrie();
+        //char[][] board = { { 'o', 'a', 'a', 'n' }, { 'e', 't', 'a', 'e' }, { 'i', 'h', 'k', 'r' },
+        //      { 'i', 'f', 'l', 'v' } };
+        char[][] board = { { 'a', 'b' }, { 'c', 'd' } };
+        List<String> result = trie.wordFinder(board);
         System.out.println(result.toString());
     }
 
-    private static void search(char[][] board, int r, int c, List<String> result, TrieNode p, String curr) {
-        if (r < 0 || r > board.length - 1 || c < 0 || c > board[0].length - 1)
-            return;
+    private List<String> wordFinder(char[][] board) {
+        Set<String> result = new HashSet<>();
+        if (board == null || board.length == 0)
+            return Collections.emptyList();
 
-        char ch = board[r][c];
-        curr = curr.concat(Character.toString(ch));
-        if (ch - 'a' < 0)
-            return;
-        p = p.children[ch - 'a'];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                StringBuffer sb = new StringBuffer();
+                boggler(board, i, j, result, this.root, sb);
+            }
+        }
+        return new ArrayList<>(result);
+    }
 
-        if (p == null)
-            return;
-
-        if (p.leaf) {
-            result.add(curr);
+    private void boggler(char[][] board, int i, int j, Set<String> result, TrieNode p, StringBuffer sb) {
+        if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) {
             return;
         }
-        char temp = board[r][c];
-        board[r][c] = '#';
-        search(board, r + 1, c, result, p, curr);
-        search(board, r - 1, c, result, p, curr);
-        search(board, r, c + 1, result, p, curr);
-        search(board, r, c - 1, result, p, curr);
-        board[r][c] = temp;
+        char ch = board[i][j];
+        if (ch == '#') {
+            return;
+        }
+        p = p.children[ch - 'a'];
+        if (p == null) {
+            return;
+        }
+        sb.append(ch);
+        if (p.leaf) {
+            result.add(sb.toString());
+            //return; * imp
+        }
+
+        board[i][j] = '#';
+
+        boggler(board, i + 1, j, result, p, sb);
+        boggler(board, i - 1, j, result, p, sb);
+        boggler(board, i, j - 1, result, p, sb);
+        boggler(board, i, j + 1, result, p, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        board[i][j] = ch;
     }
+
 }

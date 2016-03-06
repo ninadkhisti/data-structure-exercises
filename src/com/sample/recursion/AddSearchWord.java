@@ -18,15 +18,20 @@ public class AddSearchWord {
 
     public static void main(String[] args) {
         AddSearchWord api = new AddSearchWord();
-        api.addWord("bad");
-        api.addWord("mom");
-        api.addWord("dad");
-        api.addWord("mum");
-
-        System.out.println(api.searchWord("dad"));
-        System.out.println(api.searchWord("ninad"));
-        System.out.println(api.searchWord("..d"));
-        System.out.println(api.searchWord("m.."));
+        api.addWord("at");
+        api.addWord("and");
+        api.addWord("an");
+        api.addWord("add");
+        api.search("a");
+        api.search(".at");
+        api.addWord("bat");
+        api.print();
+        System.out.println(api.search(".at"));
+        api.search("an.");
+        api.search("a.d.");
+        api.search("b.");
+        api.search("a.d");
+        api.search(".");
 
     }
 
@@ -41,7 +46,25 @@ public class AddSearchWord {
         p.leaf = true;
     }
 
-    public boolean searchWord(String pattern) {
+    public void print() {
+        StringBuffer sb = new StringBuffer();
+        printTrie(this.root, sb);
+    }
+
+    private void printTrie(TrieNode p, StringBuffer sb) {
+        if (p.leaf) {
+            System.out.println(sb.toString());
+        }
+        for (int cnt = 0; cnt < 26; cnt++) {
+            if (p.children[cnt] != null) {
+                printTrie(p.children[cnt], sb.append((char) (cnt + 'a')));
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+
+    }
+
+    public boolean search(String pattern) {
         boolean result = searchWord(pattern, root, 0);
         return result;
     }
@@ -50,17 +73,21 @@ public class AddSearchWord {
         if (start == pattern.length() && p.leaf) {
             return true;
         }
-        if (start > pattern.length()) {
+        if (start > pattern.length() - 1) {
             return false;
         }
         if (p == null)
             return false;
 
         char ch = pattern.charAt(start);
+
         if (ch == '.') {
             for (int cnt = 0; cnt < 26; cnt++) {
                 if (p.children[cnt] != null) {
-                    return searchWord(pattern, p.children[cnt], start + 1);
+                    boolean result = searchWord(pattern, p.children[cnt], start + 1);
+                    if (result) {
+                        return true;
+                    }
                 }
             }
         } else {

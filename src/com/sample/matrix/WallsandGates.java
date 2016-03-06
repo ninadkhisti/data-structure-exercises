@@ -20,7 +20,8 @@ public class WallsandGates {
         int[][] i = { { 1, 1, 0, 0, 0 }, { 0, 1, 0, 0, 1 }, { 1, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 }, { 1, 0, 1, 0, 1 } };
         islands(i);
 
-        int[][] ii = { { 1, 1, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 1, 1 }, };
+        //int[][] ii = { { 1, 1, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 1, 1 }, };
+        int[][] ii = { { 1 } };
         islandsII(ii);
     }
 
@@ -98,8 +99,6 @@ public class WallsandGates {
                         int i = pos.get(0);
                         int j = pos.get(1);
 
-                        //if (input[i][j] == -1)
-                        //    continue;
                         input[i][j] = -1; //visited
                         if (i > 0 && input[i - 1][j] == 1) {
                             input[i - 1][j] = -1;

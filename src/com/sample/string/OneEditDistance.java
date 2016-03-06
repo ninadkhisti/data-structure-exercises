@@ -39,7 +39,7 @@ public class OneEditDistance {
                 }
             } else {
                 i++;
-                j--;
+                j++;
             }
         }
 

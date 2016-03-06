@@ -22,6 +22,7 @@ public class HappyNumber {
         System.out.println(countPrimes(7));
         System.out.println(countPrimes(8));
         System.out.println(countPrimes(11));
+        System.out.println(countPrimesII(160));
     }
 
     private static int addDigits(int i) {
@@ -86,20 +87,23 @@ public class HappyNumber {
         return result;
     }
 
+    /*
+     * Need more work and mathematical deduction
     private static int countPrimes(int n) {
-        if (n <= 0)
+        if (n <= 2)
             return 0;
-
-        if (n == 2)
-            return 1;
         if (n == 3)
+            return 1;
+        if (n == 4)
+            return 1;
+        if (n == 5)
+            return 1;
+        if (n == 6)
             return 2;
-        if (n > 3 && n <= 6)
-            return 3;
         if (n == 7)
-            return 4;
+            return 2;
         int primes = 4;
-        for (int cnt = 2; cnt <= n; cnt++) {
+        for (int cnt = 8; cnt < n; cnt++) {
             if (cnt % 2 == 0)
                 continue;
             if (cnt % 3 == 0)
@@ -111,5 +115,39 @@ public class HappyNumber {
             primes++;
         }
         return primes;
+    }
+    */
+
+    public static int countPrimesII(int n) {
+        boolean[] notPrime = new boolean[n];
+        int count = 0;
+        for (int i = 2; i < n; i++) {
+            if (notPrime[i] == false) {
+                count++;
+                for (int j = 2; i * j < n; j++) {
+                    notPrime[i * j] = true;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static int countPrimes(int n) {
+        int count = 0;
+        for (int cnt = 2; cnt < n; cnt++) {
+            if (isPrime(cnt))
+                count++;
+        }
+        return count;
+    }
+
+    private static boolean isPrime(int n) {
+        for (int cnt = 2; cnt < Math.sqrt(n); cnt++) {
+            if (n % cnt == 0) { // not prime
+                return false;
+            }
+        }
+        return true;
     }
 }

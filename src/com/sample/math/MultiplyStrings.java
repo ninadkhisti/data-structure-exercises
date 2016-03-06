@@ -41,7 +41,7 @@ public class MultiplyStrings {
         for (int cnt = 0; cnt < digits.length; cnt++) {
             sb = sb.append(digits[cnt]);
         }
-        while (sb.length() > 0 && sb.charAt(0) == '0')
+        while (sb.length() > 1 && sb.charAt(0) == '0')
             sb.deleteCharAt(0);
         return sb.toString();
 

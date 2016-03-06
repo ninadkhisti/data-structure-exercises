@@ -35,7 +35,7 @@ public class PhoneNumberCombinations {
         String letters = numbers.get(Integer.parseInt(n));
         for (int cnt = 0; cnt < letters.length(); cnt++) {
             char c = letters.charAt(cnt);
-            phonecombinations(number.substring(1), numbers, curr.concat(Character.toString(c)), result);
+            phonecombinations(number.substring(1), numbers, curr + c, result);
         }
 
     }

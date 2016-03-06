@@ -20,6 +20,8 @@ public class ThreeAndFourSum {
         Integer[] input = { -1, 0, 1, 2, -1, -4 };
 
         int[] array = { 1, 8, 30, 40, 100 };
+        threeSumBetter();
+        fourSumBetter();
         twoDifference(array);
 
         threeSum(input);
@@ -145,8 +147,8 @@ public class ThreeAndFourSum {
         Arrays.sort(input);
         int sum = 0;
         List<List<Integer>> result = new ArrayList<>();
-        for (int i = 0; i < input.length; i++) {
-            for (int j = i + 1; j < input.length; j++) {
+        for (int i = 0; i < input.length - 2; i++) {
+            for (int j = i + 1; j < input.length - 1; j++) {
                 for (int k = j + 1; k < input.length; k++) {
                     if (sum == input[i] + input[j] + input[k]) {
                         List<Integer> triplet = new ArrayList<>();
@@ -162,7 +164,6 @@ public class ThreeAndFourSum {
     }
 
     private static void threeSumII(Integer[] input) {
-        Arrays.sort(input);
         int sum = 0;
         List<List<Integer>> result = new ArrayList<>();
         Map<Integer, List<Integer>> inputIndexMap = new HashMap<>();
@@ -190,6 +191,84 @@ public class ThreeAndFourSum {
                             triplet.add(reminder);
                             result.add(triplet);
                         }
+                    }
+                }
+            }
+        }
+        System.out.println(result.toString());
+    }
+
+    private static void threeSumBetter() {
+        int[] input = { -1, 0, 1, 2, -1, 2, 2, 2, 2, 2, -4 };
+        int target = 0;
+        if (input == null || input.length <= 2)
+            return;
+
+        Arrays.sort(input);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < input.length - 2; i++) {
+            if (i > 0 && input[i] == input[i - 1])
+                continue;
+            int l = i + 1, r = input.length - 1;
+            while (l < r) {
+                int sum = input[i] + input[l] + input[r];
+                if (sum == target) {
+                    List<Integer> aresult = new ArrayList<>();
+                    aresult.add(input[i]);
+                    aresult.add(input[l]);
+                    aresult.add(input[r]);
+                    result.add(aresult);
+
+                    while (l < r && input[l] == input[l + 1])
+                        l++;
+                    while (l < r && input[r] == input[r - 1])
+                        r--;
+                    l++;
+                    r--;
+                } else if (sum > target) {
+                    r--;
+                } else if (sum < target) {
+                    l++;
+                }
+            }
+        }
+        System.out.println(result.toString());
+    }
+
+    private static void fourSumBetter() {
+        int[] input = { 1, 0, -1, 0, -2, 2 };
+        int target = 0;
+        if (input == null || input.length <= 3)
+            return;
+        Arrays.sort(input);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < input.length - 3; i++) {
+            if (i > 0 && input[i] == input[i - 1])
+                continue;
+            for (int j = i + 1; j < input.length - 2; j++) {
+                if (j > i + 1 && input[j] == input[j - 1])
+                    continue;
+                int l = j + 1, r = input.length - 1;
+                while (l < r) {
+                    int sum = input[i] + input[j] + input[l] + input[r];
+                    if (sum == target) {
+                        List<Integer> aresult = new ArrayList<>();
+                        aresult.add(input[i]);
+                        aresult.add(input[j]);
+                        aresult.add(input[l]);
+                        aresult.add(input[r]);
+                        result.add(aresult);
+
+                        while (l < r && input[l] == input[l + 1])
+                            l++;
+                        while (l < r && input[r] == input[r - 1])
+                            r--;
+                        l++;
+                        r--;
+                    } else if (sum > target) {
+                        r--;
+                    } else {
+                        l++;
                     }
                 }
             }

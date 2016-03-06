@@ -28,7 +28,7 @@ public class RestoreIPAddresses {
             if (input.length() < cnt)
                 continue;
             String val = input.substring(0, cnt);
-            if (Integer.parseInt(val) > 255 || cnt != String.valueOf(val).length())
+            if (Integer.parseInt(val) > 255 || cnt != String.valueOf(Integer.parseInt(val)).length())
                 continue;
             restoreips(input.substring(cnt), curr.concat(val).concat("."), parts + 1, result);
         }

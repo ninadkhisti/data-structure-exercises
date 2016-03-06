@@ -1,6 +1,7 @@
 package com.sample.string;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * TODO: Describe purpose and behavior of PalindromePermutation
@@ -8,32 +9,22 @@ import java.util.Arrays;
 public class PalindromePermutation {
 
     public static void main(String[] args) {
-        String input = "ccdde";
+        String input = "as";
 
         boolean result = palindromePermutaion(input);
         System.out.println(result);
     }
 
     private static boolean palindromePermutaion(String input) {
-        char[] array = input.toCharArray();
-        Arrays.sort(array);
-        boolean oddcount = false;
-        int count = 1;
-        for (int cnt = 1; cnt < array.length; cnt++) {
-            if (array[cnt - 1] == array[cnt]) {
-                count++;
-            } else {
-                if (count % 2 == 1) {
-                    if (oddcount) {
-                        return false;
-                    } else {
-                        oddcount = true;
-                    }
-                }
-                count = 1;
-            }
+        Set<Character> set = new HashSet<>();
+
+        for (int cnt = 0; cnt < input.length(); cnt++) {
+            if (!set.contains(input.charAt(cnt)))
+                set.add(input.charAt(cnt));
+            else
+                set.remove(input.charAt(cnt));
         }
 
-        return true;
+        return set.isEmpty() || set.size() == 1;
     }
 }

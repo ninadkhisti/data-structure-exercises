@@ -1,7 +1,6 @@
 package com.sample.binarytree;
 
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -40,7 +39,6 @@ public class LevelOrderTraversal {
 
         levelOrderTraversal(root);
         levelOrderTraversalII(root);
-        levelOrderTraversalZigZag(root);
         levelOrderTraversalZigZagII(root);
     }
 
@@ -94,39 +92,6 @@ public class LevelOrderTraversal {
         }
     }
 
-    private static void levelOrderTraversalZigZag(TreeNode<Integer> root) {
-        Queue<TreeNode<Integer>> queue = new LinkedList<TreeNode<Integer>>();
-        if (root == null) {
-            return;
-        }
-        queue.add(root);
-        List<List<Integer>> result = new ArrayList<>();
-        int height = 0;
-        while (!queue.isEmpty()) {
-            List<Integer> level = new ArrayList<>();
-            int queuesize = queue.size();
-            //level traversal
-            for (int cnt = 0; cnt < queuesize; cnt++) {
-                TreeNode<Integer> node = queue.remove();
-                level.add(node.data);
-                if (node.left != null)
-                    queue.add(node.left);
-                if (node.right != null)
-                    queue.add(node.right);
-            }
-            if (height % 2 == 0) {
-                List<Integer> ziggedLevel = new ArrayList<>();
-                for (int cnt = level.size() - 1; cnt >= 0; cnt--) {
-                    ziggedLevel.add(level.get(cnt));
-                }
-                level = ziggedLevel;
-            }
-            result.add(level);
-            height++;
-        }
-        System.out.println(result.toString());
-    }
-
     private static void levelOrderTraversalZigZagII(TreeNode<Integer> root) {
         Queue<TreeNode<Integer>> queue = new LinkedList<TreeNode<Integer>>();
         if (root == null) {
@@ -134,26 +99,27 @@ public class LevelOrderTraversal {
         }
         queue.add(root);
         int height = 0;
+        List<List<Integer>> result = new ArrayList<>();
         while (!queue.isEmpty()) {
-            Deque<Integer> level = new LinkedList<>();
+            List<Integer> level = new ArrayList<>();
             int queuesize = queue.size();
             //level traversal
             for (int cnt = 0; cnt < queuesize; cnt++) {
                 TreeNode<Integer> node = queue.remove();
                 if (height % 2 == 0) {
-                    level.addLast(node.data);
+                    level.add(node.data);
                 } else {
-                    level.addFirst(node.data);
+                    level.add(0, node.data);
                 }
                 if (node.left != null)
                     queue.add(node.left);
                 if (node.right != null)
                     queue.add(node.right);
             }
-            System.out.println(level.toString());
             height++;
+            result.add(level);
         }
-
+        System.out.println(result.toString());
     }
 
 }

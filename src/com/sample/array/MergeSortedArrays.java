@@ -15,6 +15,12 @@ public class MergeSortedArrays {
         System.out.println(mergeSortedArray(arr1, arr2).toString());
     }
 
+    private static void mergeSortedArrayII() {
+        int[] arr1 = { 0, 0, 0, 0, 0, 0, 1, 2, 5, 6, 7, 8, 9, 10, 20, 34, 50 };
+        int[] arr2 = { 3, 5, 11 };
+
+    }
+
     private static List<Integer> mergeSortedArray(int[] arr1, int[] arr2) {
         Integer[] result = new Integer[arr1.length + arr2.length];
 

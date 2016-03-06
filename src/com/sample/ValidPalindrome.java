@@ -16,6 +16,8 @@ public class ValidPalindrome {
     }
 
     private static boolean validPalindrome(char[] inputArray) {
+        if (inputArray == null || inputArray.length <= 1)
+            return true;
         int l = 0;
         int r = inputArray.length - 1;
         while (l < r) {

@@ -17,7 +17,7 @@ public class UglyNumber {
     }
 
     private static boolean uglyNumber(int i) {
-        for (int cnt = 2; cnt < 6; cnt++) {
+        for (int cnt = 2; cnt < 6 && i > 0; cnt++) {
             while (i % cnt == 0) {
                 i = i / cnt;
             }
@@ -55,7 +55,7 @@ public class UglyNumber {
         return result;
     }
 
-    private static List<Integer> uglyNumbers(int n) {
+    private static int uglyNumbers(int n) {
         int[] seed = { 2, 7, 13, 19 };
 
         int[] multiple = new int[seed.length];
@@ -81,6 +81,6 @@ public class UglyNumber {
                 }
             }
         }
-        return result;
+        return result.get(result.size() - 1);
     }
 }

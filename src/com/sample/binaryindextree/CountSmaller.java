@@ -22,7 +22,7 @@ public class CountSmaller {
         Integer[] result = new Integer[nums.length];
         System.out.println(Arrays.toString(nums));
         //make all elements in the array posive while maintaining their order
-        //makePositive(nums);
+        makePositive(nums);
 
         for (int i = nums.length - 1; i >= 0; i--) {
             result[i] = get(nums[i]);
@@ -46,7 +46,7 @@ public class CountSmaller {
     public void add(int idx, int val) {
         while (idx < MAX) {
             tree[idx] += val;
-            idx += (idx & (-idx));
+            idx += idx & ~(idx - 1);
         }
     }
 
@@ -54,7 +54,7 @@ public class CountSmaller {
         int result = 0;
         while (idx > 0) {
             result += tree[idx];
-            idx &= (idx - 1);
+            idx -= idx & ~(idx - 1);
         }
         return result;
     }
