@@ -9,58 +9,65 @@ import java.util.List;
  */
 public class TwoDimensionalIterator implements Iterator<Integer> {
 
-    private int row;
     private int col;
-    private List<List<Integer>> input;
-    private int rowSize;
+    private int row;
+    private int rowsize;
+    private List<List<Integer>> data;
 
-    public TwoDimensionalIterator(List<List<Integer>> input) {
-        this.input = input;
-        row = 0;
+    public TwoDimensionalIterator(List<List<Integer>> vec) {
         col = 0;
-        rowSize = input.size();
+        row = 0;
+        rowsize = vec.size();
+        data = vec;
     }
 
     @Override
     public boolean hasNext() {
-        if (input == null || input.isEmpty())
+        if (data == null || data.size() == 0)
             return false;
-        while (row < rowSize && (this.input.get(row) == null || this.input.get(row).isEmpty())) {
+
+        while (row < rowsize && (data.get(row) == null || data.get(row).size() == 0)) {
             row++;
         }
-        return row < rowSize;
+        return row < rowsize;
     }
 
     @Override
     public Integer next() {
-        int num = this.input.get(row).get(col);
+        int result = data.get(row).get(col);
         col++;
-        if (row < rowSize && this.input.get(row).size() - 1 == col) { //last element
-            row++;
+        if (col == data.get(row).size()) {
             col = 0;
+            row++;
         }
-        return num;
+        return result;
     }
 
     @Override
     public void remove() {
-        int rowRemove = row;
-        int colRemove = col;
+        int rowDeleted;
+        int coldeleted;
+        List<Integer> candidateList = null;
 
-        if (colRemove == 0) {
-            rowRemove--;
-            colRemove = this.input.get(rowRemove).size() - 1;
-            this.input.get(rowRemove).remove(colRemove);
+        if (col == 0) {
+            rowDeleted = row - 1;
+            candidateList = data.get(rowDeleted);
+            coldeleted = candidateList.size() - 1;
+            candidateList.remove(coldeleted);
         } else {
-            this.input.get(rowRemove).remove(colRemove);
+            rowDeleted = row;
+            coldeleted = col - 1;
+            candidateList = data.get(rowDeleted);
+            candidateList.remove(coldeleted);
+        }
+        if (candidateList.isEmpty()) {
+            data.remove(candidateList);
+            row++;
+        }
+        if (col != 0) {
+            col--;
         }
 
-        if (this.input.get(rowRemove).isEmpty()) {
-            this.input.remove(rowRemove);
-            row--;
-        }
-        if (col != 0)
-            col--;
     }
 
     public static void main(String[] args) {

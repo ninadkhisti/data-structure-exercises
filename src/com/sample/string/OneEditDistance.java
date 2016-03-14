@@ -6,7 +6,7 @@ package com.sample.string;
 public class OneEditDistance {
 
     public static void main(String[] args) {
-        boolean result = oneEdit("2", "2");
+        boolean result = oneEdit("a", "ac");
         System.out.println(result);
     }
 

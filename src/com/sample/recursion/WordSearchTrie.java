@@ -2,9 +2,7 @@ package com.sample.recursion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * TODO: Describe purpose and behavior of WordSearchTrie
@@ -63,27 +61,28 @@ public class WordSearchTrie {
         }
         trie.printTrie();
         //char[][] board = { { 'o', 'a', 'a', 'n' }, { 'e', 't', 'a', 'e' }, { 'i', 'h', 'k', 'r' },
-        //      { 'i', 'f', 'l', 'v' } };
+        //        { 'i', 'f', 'l', 'v' } };
         char[][] board = { { 'a', 'b' }, { 'c', 'd' } };
         List<String> result = trie.wordFinder(board);
         System.out.println(result.toString());
     }
 
     private List<String> wordFinder(char[][] board) {
-        Set<String> result = new HashSet<>();
         if (board == null || board.length == 0)
             return Collections.emptyList();
 
+        List<String> result = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 StringBuffer sb = new StringBuffer();
-                boggler(board, i, j, result, this.root, sb);
+                boggler(board, result, sb, i, j, root);
             }
         }
-        return new ArrayList<>(result);
+
+        return result;
     }
 
-    private void boggler(char[][] board, int i, int j, Set<String> result, TrieNode p, StringBuffer sb) {
+    private void boggler(char[][] board, List<String> result, StringBuffer sb, int i, int j, TrieNode p) {
         if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1) {
             return;
         }
@@ -98,15 +97,13 @@ public class WordSearchTrie {
         sb.append(ch);
         if (p.leaf) {
             result.add(sb.toString());
-            //return; * imp
         }
 
         board[i][j] = '#';
-
-        boggler(board, i + 1, j, result, p, sb);
-        boggler(board, i - 1, j, result, p, sb);
-        boggler(board, i, j - 1, result, p, sb);
-        boggler(board, i, j + 1, result, p, sb);
+        boggler(board, result, sb, i + 1, j, p);
+        boggler(board, result, sb, i - 1, j, p);
+        boggler(board, result, sb, i, j + 1, p);
+        boggler(board, result, sb, i, j - 1, p);
         sb.deleteCharAt(sb.length() - 1);
         board[i][j] = ch;
     }

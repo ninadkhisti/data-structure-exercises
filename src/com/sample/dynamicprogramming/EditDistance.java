@@ -1,7 +1,5 @@
 package com.sample.dynamicprogramming;
 
-import java.util.Arrays;
-
 /**
  * TODO: Describe purpose and behavior of EditDistance
  */
@@ -15,24 +13,28 @@ public class EditDistance {
     }
 
     private static int editdistance(String s1, String s2) {
-        int[][] distances = new int[s1.length() + 1][s2.length() + 1];
-        for (int cnt = 0; cnt < distances.length; cnt++) {
-            distances[cnt][0] = cnt;
+        if ((s1 == null || s1.isEmpty()) && (s2 == null || s2.isEmpty()))
+            return 0;
+        int l1 = s1.length();
+        int l2 = s2.length();
+        int[][] dp = new int[l1 + 1][l2 + 1];
+        for (int i = 1; i <= l1; i++) {
+            dp[i][0] = i;
         }
-        for (int cnt = 0; cnt < distances[0].length; cnt++) {
-            distances[0][cnt] = cnt;
+        for (int j = 1; j <= l2; j++) {
+            dp[0][j] = j;
         }
-        for (int cnt = 1; cnt < distances.length; cnt++) {
-            for (int icnt = 1; icnt < distances[0].length; icnt++) {
-                if (s1.charAt(cnt - 1) == s2.charAt(icnt - 1)) {
-                    distances[cnt][icnt] = distances[cnt - 1][icnt - 1];
+        for (int i = 1; i <= l1; i++) {
+            for (int j = 1; j <= l2; j++) {
+                char c1 = s1.charAt(i - 1);
+                char c2 = s2.charAt(j - 1);
+                if (c1 == c2) {
+                    dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    distances[cnt][icnt] = Math.min(Math.min(distances[cnt - 1][icnt], distances[cnt][icnt - 1]),
-                            distances[cnt - 1][icnt - 1]) + 1;
+                    dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
                 }
             }
         }
-        System.out.println(Arrays.deepToString(distances));
-        return distances[s1.length()][s2.length()];
+        return dp[l1][l2];
     }
 }

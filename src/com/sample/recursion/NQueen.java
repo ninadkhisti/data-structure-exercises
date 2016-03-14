@@ -2,6 +2,7 @@ package com.sample.recursion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,39 +13,52 @@ public class NQueen {
     public static void main(String[] args) {
         List<List<String>> result = new ArrayList<List<String>>();
         result = solveNQueens(8);
-        System.out.println(result.toString());
+        for (List<String> board : result) {
+            System.out.print("[");
+            for (String row : board) {
+                System.out.println(row + ",");
+            }
+            System.out.print("]");
+        }
         System.out.println(result.size());
     }
 
-    public static List<List<String>> solveNQueens(int n) {
-        List<List<String>> result = new ArrayList<List<String>>();
-        helper(result, new ArrayList<String>(), 0, new boolean[n], new boolean[2 * n], new boolean[2 * n], n);
+    private static List<List<String>> solveNQueens(int n) {
+        if (n <= 0)
+            return Collections.emptyList();
+        List<List<String>> result = new ArrayList<>();
+        boolean[] ld = new boolean[2 * n];
+        boolean[] rd = new boolean[2 * n];
+        boolean[] column = new boolean[n];
+        List<String> board = new ArrayList<>();
+        placeNQueens(result, board, ld, rd, column, 0, n);
         return result;
     }
 
-    private static void helper(List<List<String>> result, List<String> board, int row, boolean[] cols, boolean[] d1,
-            boolean[] d2, int n) {
+    private static void placeNQueens(List<List<String>> result, List<String> board, boolean[] ld, boolean[] rd,
+            boolean[] column, int row, int n) {
         if (row == n) {
-            result.add(new ArrayList<String>(board));
+            result.add(new ArrayList<>(board));
             return;
         }
         for (int col = 0; col < n; col++) {
-            int id1 = col - row + n;
-            int id2 = col + row;
-            if (!cols[col] && !d1[id1] && !d2[id2]) {
-                char[] r = new char[n];
-                Arrays.fill(r, '.');
-                r[col] = 'Q';
-                board.add(new String(r));
-                cols[col] = true;
-                d1[id1] = true;
-                d2[id2] = true;
-                helper(result, board, row + 1, cols, d1, d2, n);
+            int leftdiag = row + col;
+            int rightdiag = row - col + n;
+            if (!column[col] && !ld[leftdiag] && !rd[rightdiag]) {
+                column[col] = true;
+                ld[leftdiag] = true;
+                rd[rightdiag] = true;
+                char[] arow = new char[n];
+                Arrays.fill(arow, '.');
+                arow[col] = 'Q';
+                board.add(new String(arow));
+                placeNQueens(result, board, ld, rd, column, row + 1, n);
                 board.remove(board.size() - 1);
-                cols[col] = false;
-                d1[id1] = false;
-                d2[id2] = false;
+                column[col] = false;
+                ld[leftdiag] = false;
+                rd[rightdiag] = false;
             }
         }
+
     }
 }

@@ -18,70 +18,69 @@ public class NestedListParser {
     static class NestedList {
         int value;
         boolean number;
-        List<NestedList> list;
+        List<NestedList> nestedList;
 
         public NestedList() {
-            this.list = new ArrayList<>();
+            this.nestedList = new ArrayList<>();
         }
 
-        public void addList(NestedList alist) {
-            this.list.add(alist);
+        public void addToList(NestedList listItem) {
+            this.nestedList.add(listItem);
         }
 
-        public void setValue(int i) {
-            this.value = i;
-            number = true;
+        public void setValue(int value) {
+            this.value = value;
+            this.number = true;
         }
 
-        public NestedList parse(String raw) {
-            if (raw == null || raw.length() == 0)
+        public NestedList parse(String input) {
+            if (input == null || input.isEmpty())
                 return null;
 
-            if (raw.charAt(0) != '[') {
-                NestedList list = new NestedList();
-                Integer num = Integer.parseInt(raw);
-                list.setValue(num);
-                return list;
+            if (input.charAt(0) != '[') {
+                Integer avalue = Integer.parseInt(input);
+                NestedList nestedList = new NestedList();
+                nestedList.setValue(avalue);
+                return nestedList;
             }
-
             Stack<NestedList> stack = new Stack<>();
             StringBuffer sb = new StringBuffer();
             NestedList result = null;
-            for (int cnt = 0; cnt < raw.length(); cnt++) {
-                char ch = raw.charAt(cnt);
+            for (int cnt = 0; cnt < input.length(); cnt++) {
+                char ch = input.charAt(cnt);
                 if (ch == '[') {
-                    NestedList nlist = new NestedList();
+                    NestedList alist = new NestedList();
                     if (!stack.isEmpty()) {
-                        stack.peek().addList(nlist);
+                        stack.peek().addToList(alist);
                     }
-                    stack.push(nlist);
-                } else if (ch == ',' || ch == ']') {
-                    if (ch == ',') {
-                        if (sb.length() > 0) {
-                            NestedList list = new NestedList();
-                            Integer num = Integer.parseInt(sb.toString());
-                            list.setValue(num);
-                            sb.setLength(0);
-                            stack.peek().addList(list);
-                        }
+                    stack.push(alist);
+                } else if (ch == ']' || ch == ',') {
+                    if (sb.length() > 0) {
+                        Integer val = Integer.parseInt(sb.toString());
+                        NestedList item = new NestedList();
+                        item.setValue(val);
+                        stack.peek().addToList(item);
+                        sb.setLength(0);
                     }
+
                     if (ch == ']') {
                         result = stack.pop();
                     }
-
                 } else {
                     sb.append(ch);
                 }
             }
+
             return result;
         }
 
         public String toString() {
-            if (this.number)
+            if (this.number) {
                 return this.value + "";
-            else
-                return this.list.toString();
-
+            } else {
+                return this.nestedList.toString();
+            }
         }
     }
+
 }

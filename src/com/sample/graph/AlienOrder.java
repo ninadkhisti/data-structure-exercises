@@ -17,66 +17,68 @@ public class AlienOrder {
     }
 
     private static String alienOrder(String[] words) {
+        if (words == null || words.length == 0)
+            return null;
+
         Map<Character, Set<Character>> graph = new HashMap<>();
         for (int cnt = 0; cnt < words.length; cnt++) {
             for (int i = 0; i < words[cnt].length(); i++) {
-                if (!graph.containsKey(words[cnt].charAt(i))) {
-                    graph.put(words[cnt].charAt(i), new HashSet<Character>());
+                char ch = words[cnt].charAt(i);
+                if (!graph.containsKey(ch)) {
+                    graph.put(ch, new HashSet<Character>());
                 }
             }
+
             if (cnt > 0) {
                 connectGraph(graph, words[cnt - 1], words[cnt]);
             }
         }
-        System.out.println(graph.toString());
-        StringBuffer sb = new StringBuffer();
         Map<Character, Integer> visited = new HashMap<>();
-        for (Character c : graph.keySet()) {
-            if (!topologicalSort(graph, sb, visited, c)) {
-                return "";
+        StringBuffer sb = new StringBuffer();
+        for (Character vertex : graph.keySet()) {
+            if (!topologicalSort(graph, visited, sb, vertex)) {
+                return null;
             }
         }
 
         return sb.toString();
     }
 
-    private static boolean topologicalSort(Map<Character, Set<Character>> graph, StringBuffer sb,
-            Map<Character, Integer> visited, Character c) {
-        if (visited.containsKey(c)) {
-            if (visited.get(c) == -1) {
+    private static boolean topologicalSort(Map<Character, Set<Character>> graph, Map<Character, Integer> visited,
+            StringBuffer sb, Character vertex) {
+
+        if (visited.containsKey(vertex)) {
+            if (visited.get(vertex) == -1) {
                 return false;
             }
-            if (visited.get(c) == 1) {
+            if (visited.get(vertex) == 1) {
                 return true;
             }
-        } else {
-            visited.put(c, -1);
         }
-        for (Character child : graph.get(c)) {
-            if (!topologicalSort(graph, sb, visited, child)) {
+        visited.put(vertex, -1);
+        for (Character child : graph.get(vertex)) {
+            if (!topologicalSort(graph, visited, sb, child)) {
                 return false;
             }
         }
 
-        sb.insert(0, c);
-        visited.put(c, 1);
+        visited.put(vertex, 1);
+        sb.insert(0, vertex);
         return true;
     }
 
-    private static void connectGraph(Map<Character, Set<Character>> graph, String prev, String curr) {
-        if (prev == null || prev.length() == 0 || curr == null || curr.length() == 0) {
+    private static void connectGraph(Map<Character, Set<Character>> graph, String previous, String current) {
+        if (previous == null || previous.isEmpty() || current == null || current.isEmpty()) {
             return;
         }
-        int minlength = prev.length() < curr.length() ? prev.length() : curr.length();
+        int minlength = previous.length() < current.length() ? previous.length() : current.length();
+
         for (int cnt = 0; cnt < minlength; cnt++) {
-            char p = prev.charAt(cnt);
-            char q = curr.charAt(cnt);
-            if (p != q) {
-                if (!graph.get(p).contains(q)) {
-                    graph.get(p).add(q);
-                    break;
-                }
+            if (previous.charAt(cnt) != current.charAt(cnt)) {
+                graph.get(previous.charAt(cnt)).add(current.charAt(cnt));
+                break;
             }
         }
+
     }
 }

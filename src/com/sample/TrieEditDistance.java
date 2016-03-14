@@ -1,171 +1,86 @@
 package com.sample;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * TODO: Describe purpose and behavior of TrieEditDistance
  */
 public class TrieEditDistance {
 
+    class TrieNode {
+        boolean leaf;
+        TrieNode[] children = new TrieNode[26];
+    }
+
     private TrieNode root;
 
     public TrieEditDistance() {
-        root = new TrieNode();
+        this.root = new TrieNode();
     }
 
     public void addWord(String word) {
-        if (word == null || word.length() == 0)
+        if (word == null || word.isEmpty())
             return;
 
-        char[] wordChars = word.toCharArray();
-        TrieNode p = root;
-        for (int cnt = 0; cnt < wordChars.length; cnt++) {
-            if (p.children[wordChars[cnt] - 'a'] != null) {
-                p = p.children[wordChars[cnt] - 'a'];
-            } else {
-                p.children[wordChars[cnt] - 'a'] = new TrieNode();
-                p = p.children[wordChars[cnt] - 'a'];
+        TrieNode p = this.root;
+        for (int cnt = 0; cnt < word.length(); cnt++) {
+            char ch = word.charAt(cnt);
+            if (p.children[ch - 'a'] == null) {
+                p.children[ch - 'a'] = new TrieNode();
             }
+            p = p.children[ch - 'a'];
         }
         p.leaf = true;
     }
 
-    public boolean searchWord(String word) {
-        if (word == null || word.length() == 0)
-            return false;
+    public void printTree() {
+        printHelper("", this.root);
+    }
 
-        char[] wordChards = word.toCharArray();
-        TrieNode p = root;
-        for (int cnt = 0; cnt < wordChards.length; cnt++) {
-            if (p.children[wordChards[cnt] - 'a'] != null) {
-                p = p.children[wordChards[cnt] - 'a'];
-            } else {
-                return false;
+    private void printHelper(String curr, TrieNode p) {
+        if (p.leaf) {
+            System.out.println(curr);
+        }
+        for (int cnt = 0; cnt < 26; cnt++) {
+            if (p.children[cnt] != null) {
+                printHelper(curr + (char) (cnt + 'a'), p.children[cnt]);
             }
         }
-        if (p.leaf) {
-            return true;
-        } else {
+    }
+
+    public boolean searchWord(String word) {
+        if (word == null || word.isEmpty())
             return false;
+
+        TrieNode p = this.root;
+        for (int cnt = 0; cnt < word.length(); cnt++) {
+            char ch = word.charAt(cnt);
+            if (p.children[ch - 'a'] != null) {
+                p = p.children[ch - 'a'];
+            }
         }
+        if (p.leaf)
+            return true;
+        else
+            return false;
     }
 
     public boolean startsWith(String word) {
-        if (word == null || word.length() == 0)
+        if (word == null || word.isEmpty())
             return false;
 
-        char[] wordChars = word.toCharArray();
-        TrieNode p = root;
-
-        for (int cnt = 0; cnt < wordChars.length; cnt++) {
-            if (p.children[wordChars[cnt] - 'a'] != null)
-                p = p.children[wordChars[cnt] - 'a'];
-            else
-                return false;
-        }
-        return true;
-    }
-
-    public void printTree() {
-        printHelper(root, new StringBuffer());
-    }
-
-    public void printKEditDistanceBFS(String target, int k) {
-        Queue<Node> queue = new LinkedList<>();
-        for (int cnt = 0; cnt < 26; cnt++) {
-            if (root.children[cnt] != null) {
-                Node n = new Node(root.children[cnt]);
-                if (target.charAt(0) != ((char) (cnt + 'a'))) {
-                    n.k++;
-                }
-                n.current.append(((char) (cnt + 'a')));
-                queue.add(n);
+        TrieNode p = this.root;
+        for (int cnt = 0; cnt < word.length(); cnt++) {
+            char ch = word.charAt(cnt);
+            if (p.children[ch - 'a'] != null) {
+                p = p.children[ch - 'a'];
             }
         }
-
-        int index = 1;
-        while (!queue.isEmpty()) {
-            Node node = queue.remove();
-            TrieNode tnode = node.node;
-            int ksofar = node.k;
-            if (ksofar <= k && tnode.leaf) {
-                System.out.println(node.current.toString());
-            }
-            for (int cnt = 0; cnt < 26; cnt++) {
-                if (tnode.children[cnt] != null) {
-                    if (target.charAt(index) != ((char) (cnt + 'a'))) {
-                        ksofar++;
-                    }
-                    if (ksofar <= k) {
-                        Node n1 = new Node(tnode.children[cnt]);
-                        n1.k = ksofar;
-                        n1.current = node.current.append((char) (cnt + 'a'));
-                        queue.add(n1);
-                    }
-                }
-            }
-            //index++;
-        }
-
-    }
-
-    public void printKEditDistanceNodes(String target, int k) {
-        int[] prev = new int[target.length() + 1];
-        for (int cnt = 0; cnt < target.length(); cnt++) {
-            prev[cnt] = cnt;
-        }
-        List<String> result = new ArrayList<>();
-        kEditDistanceHelper("", target, k, prev, root, result);
-        System.out.println("***" + result.toString());
-    }
-
-    private void kEditDistanceHelper(String current, String target, int k, int[] prev, TrieNode p, List<String> result) {
-        if (p.leaf) {
-            if (prev[target.length()] <= k) {
-                result.add(current);
-            } else {
-                return;
-            }
-        }
-
-        for (int cnt = 0; cnt < 26; cnt++) {
-            if (p.children[cnt] == null) {
-                continue;
-            }
-
-            int[] curr = new int[target.length() + 1];
-            curr[0] = current.length() + 1;
-            for (int icnt = 1; icnt < curr.length; icnt++) {
-                if (target.charAt(icnt - 1) == (char) (cnt + 'a')) {
-                    curr[icnt] = prev[icnt - 1];
-                } else {
-                    curr[icnt] = Math.min(Math.min(prev[icnt - 1], prev[icnt]), curr[icnt - 1]) + 1;
-                }
-            }
-            kEditDistanceHelper(current + (char) (cnt + 'a'), target, k, curr, p.children[cnt], result);
-        }
-    }
-
-    private void printHelper(TrieNode p, StringBuffer sb) {
-        if (p == null)
-            return;
-
-        if (p.leaf) {
-            System.out.println(sb.toString());
-        }
-        for (int cnt = 0; cnt < 26; cnt++) {
-            if (p.children[cnt] == null) {
-                continue;
-            }
-            if (p.children[cnt] != null) {
-                printHelper(p.children[cnt], sb.append((char) ('a' + cnt)));
-                sb.deleteCharAt(sb.length() - 1);
-            }
-
-        }
+        if (p != null)
+            return true;
+        else
+            return false;
 
     }
 
@@ -181,23 +96,47 @@ public class TrieEditDistance {
         trie.printTree();
         System.out.println(trie.searchWord("abcd"));
         trie.printKEditDistanceNodes("ac", 1);
-        trie.printKEditDistanceBFS("ac", 1);
+        //trie.printKEditDistanceBFS("ac", 1);
     }
 
-    class TrieNode {
-        boolean leaf;
-        TrieNode[] children = new TrieNode[26];
-    }
+    private void printKEditDistanceNodes(String target, int k) {
+        if (target == null || target.isEmpty() || k <= 0)
+            return;
 
-    class Node {
-        int k;
-        StringBuffer current;
-        TrieNode node;
-
-        public Node(TrieNode node) {
-            k = 0;
-            current = new StringBuffer();
-            this.node = node;
+        List<String> result = new ArrayList<>();
+        int[] currdistance = new int[target.length() + 1];
+        for (int i = 0; i < currdistance.length; i++) {
+            currdistance[i] = i;
         }
+        printKEditDistanceHelper(result, "", target, k, currdistance, root);
+        System.out.println("**" + result.toString());
+    }
+
+    private void printKEditDistanceHelper(List<String> result, String current, String target, int k,
+            int[] prevdistance, TrieNode p) {
+        if (p.leaf) {
+            if (prevdistance[target.length()] <= k) {
+                result.add(current);
+            } else {
+                return;
+            }
+        }
+
+        for (int cnt = 0; cnt < 26; cnt++) {
+            if (p.children[cnt] == null) {
+                continue;
+            }
+            int[] currdistance = new int[target.length() + 1];
+            currdistance[0] = current.length() + 1;
+            for (int i = 1; i < currdistance.length; i++) {
+                if (target.charAt(i - 1) == (char) (cnt + 'a')) {
+                    currdistance[i] = prevdistance[i - 1];
+                } else {
+                    currdistance[i] = Math.min(prevdistance[i - 1], Math.min(prevdistance[i], currdistance[i - 1])) + 1;
+                }
+            }
+            printKEditDistanceHelper(result, current + (char) (cnt + 'a'), target, k, currdistance, p.children[cnt]);
+        }
+
     }
 }

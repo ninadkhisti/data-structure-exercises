@@ -10,14 +10,14 @@ public class GenerateParentheses {
 
     public static void main(String[] args) {
         List<String> result = new ArrayList<>();
-        int n = 14;
+        int n = 8;
         generateParentheses(result, "", 0, 0, n);
         System.out.println(result.toString());
     }
 
     private static void generateParentheses(List<String> result, String paren, int start, int end, int n) {
-        if (2 * n == paren.length()) {
-            result.add(new String(paren));
+        if (2 * n == paren.length()) { // break condition
+            result.add(paren);
             return;
         }
         if (start < n)

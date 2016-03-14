@@ -36,6 +36,10 @@ public class IntersectingRectangles {
             }
             return ret;
         }
+
+        public String toString() {
+            return "[ " + this.val + '-' + this.isStart + " ]";
+        }
     }
 
     static class Rect {
@@ -60,7 +64,7 @@ public class IntersectingRectangles {
             sortedByX.add(r.xStart);
             sortedByX.add(r.xEnd);
         }
-
+        System.out.println(sortedByX.toString());
         TreeSet<Endpoint> sortedByY = new TreeSet<>();
         int ret = 0;
         for (Endpoint ep : sortedByX) {
@@ -73,6 +77,9 @@ public class IntersectingRectangles {
                 sortedByY.remove(r.yStart);
                 sortedByY.remove(r.yEnd);
             }
+            System.out.println(ep.toString() + "  => " + ret);
+            System.out.println(sortedByY.size());
+            System.out.println(sortedByY.toString());
         }
         return ret > 0 ? ret + 1 : 0; // count the first square with whom an intersection is found
     }

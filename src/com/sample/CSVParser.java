@@ -17,29 +17,30 @@ public class CSVParser {
     }
 
     private static String parseCSV(String raw) {
-        List<String> tokens = tokenize(raw);
-        if (tokens == null || tokens.isEmpty())
-            return null;
-        String delimiter = "|";
         StringBuilder sb = new StringBuilder();
+        List<String> tokens = tokenize(raw);
+        String delimiter = "|";
+        if (tokens == null || tokens.isEmpty())
+            return sb.toString();
         for (int cnt = 0; cnt < tokens.size(); cnt++) {
-            sb = sb.append(tokens.get(cnt));
+            sb.append(tokens.get(cnt));
             if (cnt != tokens.size() - 1) {
-                sb = sb.append(delimiter);
+                sb.append(delimiter);
             }
         }
         return sb.toString();
     }
 
     private static List<String> tokenize(String raw) {
-        if (raw == null || raw.length() == 0)
+        if (raw == null || raw.isEmpty())
             return Collections.emptyList();
 
-        List<String> tokens = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
+        List<String> tokens = new ArrayList<>();
         boolean inQuote = false;
         for (int cnt = 0; cnt < raw.length(); cnt++) {
             char ch = raw.charAt(cnt);
+
             if (inQuote) {
                 if (ch == '"') {
                     if (cnt + 1 < raw.length() && raw.charAt(cnt + 1) == '"') {
@@ -53,12 +54,14 @@ public class CSVParser {
                 } else {
                     sb.append(ch);
                 }
+
             } else {
                 if (ch == '"') {
                     inQuote = true;
                 } else if (ch == ',') {
-                    tokens.add(sb.toString());
-                    sb.setLength(0);
+                    String token = sb.toString();
+                    tokens.add(token);
+                    sb.delete(0, sb.length());
                 } else {
                     sb.append(ch);
                 }
@@ -67,6 +70,8 @@ public class CSVParser {
         if (sb.length() > 0) {
             tokens.add(sb.toString());
         }
+
         return tokens;
     }
+
 }

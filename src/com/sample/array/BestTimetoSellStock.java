@@ -17,6 +17,25 @@ public class BestTimetoSellStock {
         bestTimetoSellStock2(input);
         bestTimetoSellStock();
         bestTimetoSellStockKTrans();
+        bestTimetoSellStockWithCooldown();
+    }
+
+    private static void bestTimetoSellStockWithCooldown() {
+        int[] input = { 1, 2, 3, 0, 2 };
+        int[] s0 = new int[input.length];
+        int[] s1 = new int[input.length];
+        int[] s2 = new int[input.length];
+
+        s0[0] = 0;
+        s1[0] = -input[0];
+        s2[0] = Integer.MIN_VALUE;
+        for (int cnt = 1; cnt < input.length; cnt++) {
+            s0[cnt] = Math.max(s0[cnt - 1], s2[cnt - 1]);
+            s1[cnt] = Math.max(s1[cnt - 1], s0[cnt - 1] - input[cnt]);
+            s2[cnt] = s1[cnt - 1] + input[cnt];
+        }
+        int maxProfit = Math.max(s0[s0.length - 1], s2[s2.length - 1]);
+        System.out.println("coooldown = >" + maxProfit);
     }
 
     private static void bestTimetoSellStockKTrans() {

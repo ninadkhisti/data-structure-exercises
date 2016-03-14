@@ -11,38 +11,42 @@ import java.util.Map;
  */
 public class GroupShiftedStrings {
     public static void main(String[] args) {
-        String[] input = { "abc", "bcd", "acef", "xyz", "az", "ba", "a", "z", "alq" };
+        String[] input = { "az", "yx" };
         List<List<String>> result = groupStrings(input);
         System.out.println(result.toString());
 
     }
 
     public static List<List<String>> groupStrings(String[] strings) {
-        List<List<String>> result = new ArrayList<List<String>>();
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
-        for (String str : strings) {
-            int offset = str.charAt(0) - 'a';
-            String key = "";
-            for (int i = 0; i < str.length(); i++) {
-                char c = (char) (str.charAt(i) - offset);
-                if (c < 'a') {
-                    c += 26;
-                }
-                key += c;
-            }
-            if (!map.containsKey(key)) {
-                List<String> list = new ArrayList<String>();
-                map.put(key, list);
-            }
-            map.get(key).add(str);
-        }
+        if (strings == null || strings.length == 0)
+            return Collections.emptyList();
 
-        System.out.println(map.toString());
-        for (String key : map.keySet()) {
-            List<String> list = map.get(key);
-            Collections.sort(list);
-            result.add(list);
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> groupMap = new HashMap<>();
+        for (String string : strings) {
+            if (string == null || string.isEmpty())
+                continue;
+            int offset = string.charAt(0) - 'a';
+            String key = "";
+            for (int i = 0; i < string.length(); i++) {
+                int computedchar = string.charAt(i) - offset < 0 ? string.charAt(i) - offset + 26 : string.charAt(i)
+                        - offset;
+                key += (char) (computedchar);
+            }
+            if (groupMap.containsKey(key)) {
+                groupMap.get(key).add(string);
+            } else {
+                List<String> groupList = new ArrayList<>();
+                groupList.add(string);
+                groupMap.put(key, groupList);
+            }
+        }
+        for (String key : groupMap.keySet()) {
+            List<String> group = groupMap.get(key);
+            Collections.sort(group);
+            result.add(group);
         }
         return result;
     }
+
 }

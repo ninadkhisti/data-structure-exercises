@@ -14,8 +14,9 @@ public class NumberToWords {
 
     public static void main(String[] args) {
 
-        for (int cnt = 0; cnt < 10000000; cnt++)
-            System.out.println(numberToWords(cnt));
+        System.out.println(numberToWords(2123));
+        //for (int cnt = 0; cnt < 10000000; cnt++)
+        //  System.out.println(numberToWords(cnt));
     }
 
     private static String numberToWords(int num) {
@@ -26,7 +27,7 @@ public class NumberToWords {
         String result = "";
         while (num > 0) {
             if (num % 1000 != 0) {
-                result = helper(num % 1000) + thousands[i] + " " + result;
+                result = helper(num % 1000) + " " + thousands[i] + " " + result;
                 i++;
             }
             num /= 1000;

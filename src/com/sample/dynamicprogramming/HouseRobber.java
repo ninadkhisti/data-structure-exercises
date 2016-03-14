@@ -7,6 +7,7 @@ public class HouseRobber {
 
     public static void main(String[] args) {
         int[] input = { 4, 10, 3, 1, 5 };
+        //int[] input = { 1 };
         int maxmoney = houseRobber(input);
         System.out.println(maxmoney);
     }
@@ -17,7 +18,7 @@ public class HouseRobber {
 
         int prev2 = 0;
         int prev1 = input[0];
-        int max = Integer.MIN_VALUE;
+        int max = input[0];
         for (int cnt = 1; cnt < input.length; cnt++) {
             int current = prev2 + input[cnt];
             max = Math.max(max, Math.max(current, prev1));

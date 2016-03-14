@@ -24,7 +24,7 @@ public class WildcardMatching {
 
         System.out.println(regularexpressionEnhanced("abcd", "d*"));
 
-        //System.out.println(regularexpressionEnhanced("aaab", "a+b"));
+        System.out.println(regularexpressionEnhanced("aaaaaaaaaaaaaaaaaaaaab", "a+b"));
     }
 
     /**
@@ -78,41 +78,35 @@ public class WildcardMatching {
      * @return true/false
      */
     private static boolean regularexpression(String s, String p) {
-        if (p == null || p.isEmpty()) {
+        if (p == null || p.isEmpty())
             return s == null || s.isEmpty();
-        }
+
         int r = s.length();
         int c = p.length();
         boolean[][] dp = new boolean[r + 1][c + 1];
         dp[0][0] = true;
-
         for (int j = 1; j <= c; j++) {
-            if (p.charAt(j - 1) == '*' && j > 1) {
-                dp[0][j] = dp[0][j - 2]; //throws an exception for 1st char* 
+            if (j > 1 && p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];
             }
         }
-
         for (int i = 1; i <= r; i++) {
             for (int j = 1; j <= c; j++) {
-                char schar = s.charAt(i - 1);
                 char pchar = p.charAt(j - 1);
-
+                char schar = s.charAt(i - 1);
                 if (pchar != '*') {
-                    if (schar == pchar || pchar == '.') {
+                    if (pchar == schar || pchar == '.') {
                         dp[i][j] = dp[i - 1][j - 1];
                     }
-                } else { //it is *
-                    if (j > 1 && schar != p.charAt(j - 2) && p.charAt(j - 2) != '.') {
+                } else { //*
+                    if (j > 1 && p.charAt(j - 2) != schar && p.charAt(j - 2) != '.') {
                         dp[i][j] = dp[i][j - 2];
                     } else {
-                        if (j > 1) {
-                            dp[i][j] = dp[i][j - 1] || dp[i - 1][j] || dp[i][j - 2];
-                        }
+                        dp[i][j] = dp[i][j - 2] || dp[i][j - 1] || dp[i - 1][j];
                     }
                 }
             }
         }
-
         return dp[r][c];
     }
 

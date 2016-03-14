@@ -15,7 +15,7 @@ import java.util.Stack;
 public class ParenthesisStuff {
 
     public static void main(String[] args) {
-        String input = ")()())";
+        String input = "(()())";
         int result = longestvalidparenthesis(input);
         System.out.println(result);
         System.out.println(validParenthesiss("()()()()()(()(()()()()))"));

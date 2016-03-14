@@ -52,13 +52,12 @@ public class JumpGame {
 
         for (int cnt = input.length - 2; cnt >= 0; cnt--) {
             int jumps = input[cnt];
-            if (input[cnt] == 0)
+            if (jumps == 0)
                 continue;
-            int totaljumps = -1;
+            int totaljumps = Integer.MAX_VALUE;
             for (int icnt = 1; icnt <= jumps; icnt++) {
                 if (cnt + icnt <= input.length - 1) {
-                    totaljumps = totaljumps == -1 ? minJumpArray[cnt + icnt] : Math.min(totaljumps, minJumpArray[cnt
-                            + icnt]);
+                    totaljumps = Math.min(totaljumps, minJumpArray[cnt + icnt]);
                 }
             }
             minJumpArray[cnt] = totaljumps + 1;
