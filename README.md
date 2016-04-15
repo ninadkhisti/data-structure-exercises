@@ -4,5 +4,5 @@ Learn data structure basics and various algorithms.
 * Recursion
 * Binary search
 * Binary Index Tree
-* Geometric 
-* Min, max heap and may more...
+* Geometry,
+* heap, graph, topological sort and may more...
