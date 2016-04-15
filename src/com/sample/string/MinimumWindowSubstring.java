@@ -12,10 +12,10 @@ public class MinimumWindowSubstring {
         String s = "ADOBECODEBANC";
         String t = "ABC";
 
-        System.out.println(minwindowSubstring(s, t));
-        System.out.println(lengthOfLongestSubstring("bbbbb"));
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
-        System.out.println(lengthOfLongestSubstringTwoDistinct("eceba"));
+        System.out.println(minwindowSubstring("a", "b"));
+        // System.out.println(lengthOfLongestSubstring("bbbbb"));
+        // System.out.println(lengthOfLongestSubstring("abcabcbb"));
+        //System.out.println(lengthOfLongestSubstringTwoDistinct("a"));
     }
 
     private static int lengthOfLongestSubstringTwoDistinct(String s) {

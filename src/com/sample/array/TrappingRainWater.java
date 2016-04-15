@@ -51,7 +51,8 @@ public class TrappingRainWater {
         }
         int area = 0;
         for (int cnt = 0; cnt < input.length; cnt++) {
-            area += Math.min(left[cnt], right[cnt]) - input[cnt] < 0 ? 0 : Math.min(left[cnt], right[cnt]) - input[cnt];
+            int unitarea = Math.min(left[cnt], right[cnt]) - input[cnt];
+            area += unitarea < 0 ? 0 : unitarea;
         }
         System.out.println("Another area =>" + area);
     }

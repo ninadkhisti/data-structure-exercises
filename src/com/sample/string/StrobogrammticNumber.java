@@ -11,10 +11,10 @@ import java.util.List;
 public class StrobogrammticNumber {
 
     public static void main(String[] args) {
-        System.out.println(strobogrammaticNumber("2"));
+        //System.out.println(strobogrammaticNumber("2"));
         List<String> numbers = strobogrammaticNumberII(5);
-        System.out.println(numbers.toString());
-        int result = strobogrammaticNumberIII("1", "0");
+        //System.out.println(numbers.toString());
+        int result = strobogrammaticNumberIII("50", "69");
         System.out.println(result);
     }
 
@@ -34,9 +34,12 @@ public class StrobogrammticNumber {
             result.addAll(interim);
         }
         List<String> filtered = new ArrayList<>();
+        System.out.println(result.toString());
         for (String a : result) {
-            if ((a.length() == start.length() && a.compareTo(start) > 0)
-                    || (a.length() == end.length() && a.compareTo(end) < 0)) {
+            if (a.equals(start) || a.equals(end)) {
+                filtered.add(a);
+            }
+            if (a.compareTo(start) > 0 && a.compareTo(end) < 0) {
                 filtered.add(a);
             }
         }

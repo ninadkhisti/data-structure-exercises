@@ -13,12 +13,16 @@ public class FindMedianDataStream {
 
     public static void main(String[] args) {
         FindMedianDataStream median = new FindMedianDataStream();
-        median.add(10);
+        median.add(2);
+        System.out.println(median.findMedian());
+        median.add(3);
+        System.out.println(median.findMedian());
+
+        /*median.add(10);
         median.add(1);
         median.add(20);
         median.add(4);
         median.add(9);
-        /* median.add(2);
          median.add(2);
          median.add(2);
          median.add(2);
@@ -29,12 +33,13 @@ public class FindMedianDataStream {
          median.add(2);
          median.add(2);
          median.add(2);
-         median.add(2);*/
+         median.add(2);
+         median.add(2);
         median.add(250);
         median.add(0);
         median.add(25);
         median.add(40);
-        median.add(20);
+        median.add(20);*/
 
         System.out.println(median.findMedian());
     }
@@ -47,11 +52,11 @@ public class FindMedianDataStream {
         }
     }
 
-    public int findMedian() {
+    public double findMedian() {
         System.out.println(maxheap.toString());
         System.out.println(minheap.toString());
         if (minheap.size() == maxheap.size())
-            return (minheap.peek() + maxheap.peek()) / 2;
+            return (double) (minheap.peek() + maxheap.peek()) / 2;
         return maxheap.peek();
     }
 }
